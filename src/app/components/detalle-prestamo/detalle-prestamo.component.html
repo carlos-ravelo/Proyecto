@@ -1,0 +1,141 @@
+    <!-- /Controles de Guardar y Opciones-->
+    <div class="form-inline">
+      <a class="btn btn-link" *ngIf="editMode" (click)="save()">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+        Guardar
+      </a>
+  
+      <a class="btn btn-link" *ngIf="!editMode" (click)="toggleEditMode()">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        Editar
+      </a>
+  
+      <a class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">Opciones
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li>
+          <a routerLink="/app-form-movimiento">Introducir Desembolso</a>
+        </li>
+        <li>
+          <a routerLink="/app-form-movimiento">Introducir Pago</a>
+        </li>
+        <li>
+            <a routerLink="/movimientos-por-prestamo">Ver movimientos Asociados</a>
+          </li>
+      </ul>
+    </div>
+  
+    <!-- /Controles de Guardar y Opciones-->
+  
+
+
+<h5>Detalles:</h5>
+
+
+<div>
+  <div class="form-horizontal">
+
+      <div class="form-group ">
+          <label class="control-label col-sm-2" for="cliente">ID:</label>
+          <div class="col-sm-4">
+            <span  class="form-control">{{prestamo.id}}</span>
+          </div>
+        </div>
+
+    <div class="form-group ">
+      <label class="control-label col-sm-2" for="cliente">Cliente:</label>
+      <div class="col-sm-4">
+        <span *ngIf="!editMode" class="form-control">{{prestamo.cliente}}</span>
+        <input *ngIf="editMode" [(ngModel)]="prestamo.cliente" class="form-control">
+      </div>
+    </div>
+
+    <div class="form-group ">
+      <label class="control-label col-sm-2" for="cliente">Tasa:</label>
+      <div class="col-sm-4">
+        <span *ngIf="!editMode" class="form-control">{{prestamo.tasa}} %</span>
+        <input type="number" *ngIf="editMode" [(ngModel)]="prestamo.tasa" placeholder="tasa" class="form-control">
+      </div>
+    </div>
+
+    <div class="form-group ">
+      <label class="control-label col-sm-2" for="cliente">Tipo de Interes:</label>
+      <div class="col-sm-4">
+        <span class="form-control" *ngIf="!editMode">{{prestamo.tipoInteres}}</span>
+        <input *ngIf="editMode" [(ngModel)]="prestamo.tipoInteres" placeholder="tipoInteres" class="form-control">
+      </div>
+    </div>
+
+
+    <div class="form-group ">
+      <label class="control-label col-sm-2" for="cliente">Capital Inicial:</label>
+      <div class="col-sm-4">
+        <span class="form-control" *ngIf="!editMode">{{prestamo.capitalInicial}} </span>
+        <input *ngIf="editMode" type="number" [(ngModel)]="prestamo.capitalInicial" placeholder="capitalInicial" class="form-control">
+      </div>
+    </div>
+
+
+    <div class="form-group ">
+      <label class="control-label col-sm-2" for="cliente">Monto de Cuotas:</label>
+      <div class="col-sm-4">
+        <span class="form-control" *ngIf="!editMode">{{prestamo.montoCuotas}} </span>
+        <input *ngIf="editMode" type="number" [(ngModel)]="prestamo.montoCuotas" placeholder="Monto Cuotas" class="form-control">
+      </div>
+    </div>
+
+    <div class="form-group ">
+      <label class="control-label col-sm-2" for="cliente">Cant. de Cuotas:</label>
+      <div class="col-sm-4">
+        <span class="form-control" *ngIf="!editMode">{{prestamo.cantidadCuotas}} </span>
+
+        <input *ngIf="editMode" [(ngModel)]="prestamo.cantidadCuotas" placeholder="Monto Cuotas" class="form-control">
+      </div>
+    </div>
+
+
+    <div class="form-group ">
+      <label class="control-label col-sm-2" for="cliente">Fecha Apertura::</label>
+      <div class="col-sm-4">
+        <span class="form-control" *ngIf="!editMode">{{prestamo.fechaInicio}} </span>
+
+        <input type="date" *ngIf="editMode" [(ngModel)]="prestamo.fechaInicio" placeholder="Monto Cuotas" class="form-control">
+      </div>
+    </div>
+
+
+
+    <div class="form-group " *ngIf="!editMode">
+      <label class="control-label col-sm-2" for="fechaProxPago" >Fecha prox. pago:</label>
+      <div class="col-sm-4">
+        <span class="form-control">{{calculatedValues.fechaProxPago}}</span>
+      </div>
+    </div>
+
+    <div class="form-group " *ngIf="!editMode"ng serve
+    >
+      <label class="control-label col-sm-2" >Capital Pend:</label>
+      <div class="col-sm-4">
+        <span class="form-control">{{calculatedValues.capitalPendiente}}</span>
+      </div>
+    </div>
+
+    <div *ngIf="!editMode" class="form-group">
+      <label class="control-label col-sm-2">Monto Atraso:</label>
+      <div class="col-sm-4">
+    <span class="form-control">  {{calculatedValues.montoAtraso}}</span>
+    </div>
+    </div>
+
+
+    <div *ngIf="!editMode" class="form-group">
+        <label class="control-label col-sm-2">Pagado Capital:</label>
+      <div class="col-sm-4">
+     <span class="form-control"> {{calculatedValues.capitalPagado}}</span>
+      </div>
+    </div>
+  </div>
+
+
+ 

@@ -1,0 +1,87 @@
+
+<!-- /Controles de abajo -->
+<div class="container form-inline">
+    <a class="btn btn-link" *ngIf="editMode" (click)="save()">
+      <i class="fa fa-floppy-o" aria-hidden="true"></i>
+      Guardar
+    </a>
+  
+    <a class="btn btn-link" *ngIf="!editMode" (click)="toggleEditMode()">
+      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+      Editar
+    </a>
+  
+    <a class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">Opciones
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+   
+      <li>
+          <a href="#">Ver prestamos asociados</a>
+        </li>
+    </ul>
+  </div>
+  
+  <!-- /Controles de abajo -->
+
+<h5>
+  Detalles:</h5>
+<div class="container">
+  <div class="col-sm-4">
+    <label>Nombre:</label>
+    <p *ngIf="!editMode">{{cliente.nombre}}</p>
+    <input name="nombre" *ngIf="editMode" [(ngModel)]="cliente.nombre" placeholder="nombre" class="form-control input-sm" required>
+  </div>
+</div>
+
+<div class="container">
+  <div class="col-sm-4">
+    <b>Cuentas:</b>
+    <span *ngIf="editMode">
+      <a class="fa fa-plus-square-o btn btn-link" aria-hidden="true" (click)="addCuenta()">Add</a>
+      <a class="fa fa-minus-square-o btn btn-link" aria-hidden="true" (click)="delCuenta()">Del</a>
+    </span>
+    
+    <span *ngFor="let cuenta of cliente.cuentas;index as i">
+      <div *ngIf="!editMode">
+        <p for="">{{cuenta.banco}}: {{cuenta.numero}}</p>
+      </div>
+      <div *ngIf="editMode">
+        <select  class="form-control input-sm" [(ngModel)]="cuenta.banco" required>   
+         <option   *ngFor="let banco of listaBancos">{{banco}}</option>
+        </select>
+        <input name="nombre" [(ngModel)]="cuenta.numero" placeholder="Numero de cuenta" class="form-control input-sm" required>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="col-sm-4">
+    <b>Telefonos:</b>
+    <span *ngIf="editMode">
+      <a (click)="addTelefono()" class="fa fa-plus-square-o btn btn-link" aria-hidden="true">Add</a>
+      <a (click)="delTelefono()" class="fa fa-minus-square-o btn " aria-hidden="true">Del</a>
+    </span>
+
+    <span *ngFor="let telefono of cliente.telefonos; index as i; trackBy:identify">
+      <p *ngIf="!editMode">
+        <label>{{i+1}}.</label> {{telefono}}</p>
+      <div class="input-group">
+        <input type="text" class="form-control " placeholder="Numero" name="nombre" *ngIf="editMode" [(ngModel)]="cliente.telefonos[i]"
+          required>
+        <div class="input-group-btn">
+          <a class="btn btn-default" (click)="delTelefonoIndex(i)" *ngIf="editMode">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+
+
+
+
+

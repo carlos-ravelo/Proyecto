@@ -1,0 +1,55 @@
+<div class="list-group col-sm-8">
+  <h1>Lista de Prestamos</h1>
+  <a class="fa fa-plus-square-o btn btn-link" routerLink="/add-prestamo">Agregar nuevo prestamo</a>
+  <a type="button" class="fa fa-times btn btn-link" (click)="borrarPrestamo()">Borrar prestamo Actual</a>
+
+  <table class="table table-hover condensed">
+    <thead>
+      <tr>
+        <th>Prestamo</th>
+        <th>Cliente</th>
+        <th>Fecha Siguiente</th>
+        <th>Prox. Interes</th>
+        <th>Prox. Capital</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let prestamo of listaPrestamos" (click)="onSelect(prestamo)" [ngClass]="{'active':prestamo==prestamoActual}" >
+        <td>{{prestamo.id}}</td>
+        <td>{{prestamo.cliente}}</td>
+        <td>{{prestamo.fechaProxPago}}</td>
+        <td>{{prestamo.proximoInteres}}</td>
+        <td>{{prestamo.proximoCapital}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+<!-- 
+  <button *ngFor="let prestamo of listaPrestamos" (click)="onSelect(prestamo)" [ngClass]="{'list-group-item': true,'active':prestamo==prestamoActual}">
+    {{prestamo.id}} - Cliente: {{prestamo.cliente}}
+  </button> -->
+  <br>
+  <br>
+
+  <!-- nav bar -->
+  <div class="container">
+  <div class="col-sm-8">
+    <ul class="nav nav-tabs">
+      <li [ngClass]="{'active':opcionMenu=='Detalles'}" class="active" (click)="cambiarOpcionMenu('Detalles')">
+        <a role="button">Detalles</a>
+      </li>
+      <li [ngClass]="{'active':opcionMenu=='Movimientos'}" (click)="cambiarOpcionMenu('Movimientos')">
+        <a role="button">Movimientos</a>
+      </li>
+    </ul>
+  </div>
+  </div>
+
+  <div *ngIf='opcionMenu=="Detalles"' class="container">
+    <app-detalle-prestamo [prestamo]=prestamoActual></app-detalle-prestamo>
+  </div>
+
+    <div *ngIf='opcionMenu=="Movimientos"' class="container">
+      <app-movimientos-por-prestamo [prestamo]=prestamoActual></app-movimientos-por-prestamo>
+  </div>
+</div>

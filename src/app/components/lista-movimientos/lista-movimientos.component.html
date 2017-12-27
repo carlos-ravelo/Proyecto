@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-sm-6">
+    <div class="container">
+      <h2>Lista de Movimientos</h2>
+      <a class="fa fa-plus-square-o btn btn-link" routerLink="/add-movimiento">Agregar nuevo Movimiento</a>
+      <a type="button" class="fa fa-times btn btn-link" (click)="borrarMovimiento()">Borrar Movimiento Actual</a>
+   <!--  </div>
+    <button href="#" *ngFor="let movimiento of listaMovimiento" (click)="onSelect(movimiento)" [ngClass]="{'list-group-item': true,'active':movimiento==movimientoActual}">
+      {{movimiento.id}} {{movimiento.cliente}} {{movimiento.montoTotal}}
+    </button>
+    <br>
+ </div>-->
+</div> 
+
+<div class="row">
+  <div class="col-sm-6 " >
+    <table class="table table-hover condensed">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>Cliente</th>
+          <th>TipoMovimiento</th>
+          <th>FechaTransaccion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let movimiento of listaMovimiento" (click)="onSelect(movimiento)" [ngClass]="{'active':movimiento==movimientoActual}">
+          <td>{{movimiento.id}}</td>
+          <td>{{movimiento.cliente}}</td>
+          <td>{{movimiento.tipoMovimiento}}</td>
+          <td>{{movimiento.fechaTransaccion}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
