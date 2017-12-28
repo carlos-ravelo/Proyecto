@@ -3,8 +3,7 @@
   <a class="fa fa-plus-square-o btn btn-link" routerLink="/add-cliente">Agregar nuevo cliente</a>
   <a type="button" class="fa fa-times btn btn-link" (click)="borrarCliente()">Borrar Seleccionado</a>
 
-  <button href="#" *ngFor="let cliente of listaC
-  liente" (click)="onSelect(cliente)" [ngClass]="{'list-group-item': true,'active':cliente==clienteActual}">
+  <button href="#" *ngFor="let cliente of listaCliente" (click)="onSelect(cliente)" [ngClass]="{'list-group-item': true,'active':cliente==clienteActual}">
     {{cliente.nombre}}
   </button>
   <br>
