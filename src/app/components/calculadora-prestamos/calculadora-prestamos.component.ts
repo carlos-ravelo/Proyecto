@@ -5,13 +5,12 @@ import { DataFirebaseService } from '../../servicios/data-firebase.service'
 
 
 @Component({
-  selector: 'app-form-prestamos',
-  templateUrl: './form-prestamos.component.html',
-  styleUrls: ['./form-prestamos.component.css'],
+  selector: 'app-calculadora-prestamos',
+  templateUrl: './calculadora-prestamos.component.html',
+  styleUrls: ['./calculadora-prestamos.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class FormPrestamosComponent implements OnInit {
-
+export class CalculadoraPrestamosComponent implements OnInit {
   listaCliente: Cliente[];
   prestamo: Prestamo;
   movimiento:Movimiento;

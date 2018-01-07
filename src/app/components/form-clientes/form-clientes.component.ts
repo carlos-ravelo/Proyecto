@@ -4,8 +4,6 @@ import { ClientesService } from '../../servicios/clientes.service';
 import {DataFirebaseService} from '../../servicios/data-firebase.service'
 
 
-
-
 @Component({
   selector: 'app-form-clientes',
   templateUrl: './form-clientes.component.html',
@@ -20,27 +18,22 @@ export class FormClientesComponent implements OnInit {
 
   constructor(private clientesService: ClientesService,private db:DataFirebaseService) { }
 
-
-  /*onSubmit(clientesForm:any) {
-    console.log("submitted");
-    this.clientesService.addCliente(this.cliente)
-      .subscribe(cliente => {this.clear();});      
-  }*/
-
   onSubmit(clientesForm:any) {
     console.log("submitted");
-    this.db.insertarClientes(this.cliente);      
+    //Borramos los campos Vacios
+    this.cliente.cuentas = this.cliente.cuentas.filter(function(e) {  if (e.banco!="default"){ return e}})
+    this.cliente.telefonos = this.cliente.telefonos.filter(function(e) {   return e!=""})
+    this.db.insertarClientes(this.cliente);     
+    this.clear(); 
   }
   delCuenta() {
     this.cliente.cuentas.pop();
-
   };
   addCuenta() {
     this.cliente.cuentas.push({
-      banco: "",
+      banco: "default",
       numero: ""
-    });
-   
+    });   
   };
 
   delTelefono() {
@@ -56,13 +49,12 @@ export class FormClientesComponent implements OnInit {
   }
   ObtenerListaBancos(): void {
     this.clientesService.obtenerListaBancos().subscribe(listaBancos => { this.listaBancos = listaBancos; });
-  }
-  
+  } 
 
   clear() {
     this.cliente = {
       nombre:"",
-      cuentas: [{banco:"",numero:""},
+      cuentas: [{banco:"default",numero:""},
         
       ],
       telefonos: ["",

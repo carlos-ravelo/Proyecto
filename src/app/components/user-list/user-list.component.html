@@ -6,8 +6,7 @@
   <button href="#" *ngFor="let cliente of listaCliente" (click)="onSelect(cliente)" [ngClass]="{'list-group-item': true,'active':cliente==clienteActual}">
     {{cliente.nombre}}
   </button>
-  <br>
-  
+  <br> 
 
 
 <div class="container" *ngIf='clienteActual'>

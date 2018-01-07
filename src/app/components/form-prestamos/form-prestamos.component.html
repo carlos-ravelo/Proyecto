@@ -1,16 +1,19 @@
+
+
 <div class="list-group" class="col-sm-8">
 
   <h2>Agregar Prestamo a la Base de datos</h2>
   <div>
     <div class="form-group">
       <label>Numero de Prestamo:</label>
-      <small>====>
+      <small>====>{{prestamo.numeroPrestamo}}
         <strong>Nota:</strong>Este es el proximo codigo disponible</small>
     </div>
 
     <div class="form-group">
       <label>Cliente:</label>
-      <select name="cliente" [(ngModel)]="prestamo.cliente">
+      <select required name="cliente" [(ngModel)]="prestamo.cliente">
+        <option value="default">Seleccione el cliente</option>
         <option *ngFor="let cliente of listaCliente">{{cliente.nombre}}</option>
       </select>
       <a class="fa fa-plus-square-o btn btn-link" routerLink="/add-cliente">Agregar nuevo cliente</a>
@@ -18,24 +21,26 @@
 
 
     <div class="form-group">
-      <label>Capital inicial :</label>
-      <input type="number" [(ngModel)]="prestamo.capitalInicial" class="form-control" id="capital" name="capital" required>
+      <label>Capital Prestado :</label>
+      <input required type="number" [(ngModel)]="prestamo.capitalPrestado" class="form-control" id="capital" name="capital" required>
     </div>
 
     <div class="form-group">
       <label>Tasa:</label>
-      <input type="number" [(ngModel)]="prestamo.tasa" step=".01" class="form-control" id="Tasa" name="tasa" placeholder="%" required>
+      <input required type="number" [(ngModel)]="prestamo.tasa" step=".01" class="form-control" id="Tasa" name="tasa" placeholder="%" required>
     </div>
+
+    <div class="form-group">
+        <label>Cantidad de cuotas:</label>
+        <input type="number" [(ngModel)]="prestamo.cantidadCuotas" class="form-control" id="cantCuotas" name="cantCuota">
+      </div>
 
     <div class="form-group">
       <label>Monto cuotas:</label>
       <input type="number" [(ngModel)]="prestamo.montoCuotas" class="form-control" id="cuota" name="cuota">
     </div>
 
-    <div class="form-group">
-      <label>Cantidad de cuotas:</label>
-      <input type="number" [(ngModel)]="prestamo.cantidadCuotas" class="form-control" id="cantCuotas" name="cantCuota">
-    </div>
+
     <div class="form-group">
       <label>Fecha de inicio</label>
       <input type="date" [(ngModel)]="prestamo.fechaInicio" class="form-control" id="FechaInicio" name="fechaInicio" required>

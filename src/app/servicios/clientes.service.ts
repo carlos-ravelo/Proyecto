@@ -75,13 +75,13 @@ export class ClientesService {
   }
   deletePresamo(prestamo: Prestamo): Observable<Prestamo> {
 
-    const id: number = prestamo.id;
+    const id: String = prestamo.numeroPrestamo;
     const url = `${this.prestamosUrl}${id}`;
     return this.http.delete<Prestamo>(url, httpOptions)
   }
   deleteMovimiento(movimiento: Movimiento): Observable<Movimiento> {
 
-    const id: number = movimiento.id;
+    const id: string = movimiento.id;
     const url = `${this.movimientosUrl}${id}`;
     return this.http.delete<Movimiento>(url, httpOptions)
   }

@@ -1,6 +1,6 @@
 <h2>Agregar Cliente a la Base de datos</h2>
 
-<div  class="col-sm-6">
+<div class="col-sm-6">
   <div class="form-group">
     <label>Nombre</label>
     <input type="text" placeholder="Nombre" class="form-control" id="cuenta" name="nombre" required [(ngModel)]="cliente.nombre"
@@ -15,14 +15,13 @@
     </div>
 
     <div class="form-group" *ngFor="let cuenta of cliente.cuentas;index as i;trackBy:identify ">
-      <div class="form-inline">
-        <label>Banco: </label>
-        <select id="disabledSelect" class="form-control" [(ngModel)]="cliente.cuentas[i].banco">
-          <option *ngFor="let banco of listaBancos">{{banco}}</option>
-        </select>
-        <label>Numero:</label>
-        <input type="number" class="form-control" id="numero" placeholder="Cuenta No." name="numero" [(ngModel)]="cuenta.numero">
-      </div>
+      <label>Banco: </label>
+      <select name="listaBancos" required id="disabledSelect" class="form-control" [(ngModel)]="cliente.cuentas[i].banco">
+        <option value="default" >Seleccione</option>
+        <option *ngFor="let banco of listaBancos">{{banco}}</option>
+      </select>
+      <label>Numero:</label>
+      <input type="number" [required]="true" class="form-control" id="numero" placeholder="Cuenta No." name="numero" [(ngModel)]="cuenta.numero">
     </div>
 
     <div class="form-group">
@@ -30,9 +29,18 @@
       <button (click)="addTelefono()" class="fa fa-plus-square-o btn btn-link"> ADD</button>
       <button (click)="delTelefono()" class="fa fa-minus-square-o btn btn-link" aria-hidden="true" *ngIf="cliente.telefonos.length>0">DEL</button>
       <div class="form-group" *ngFor="let telefono of cliente.telefonos; index as i; trackBy:identify">
-        <input type="text" class="form-control" id="telefono" placeholder="Telefono" name="telefono" [(ngModel)]="cliente.telefonos[i]">
+        <input required type="number" class="form-control" id="telefono" placeholder="Telefono" name="telefono" [(ngModel)]="cliente.telefonos[i]">
       </div>
     </div>
+    <div class="form-group">
+        <label>Notas</label>
+        <div class="form-group" >
+          <textarea [(ngModel)]="cliente.notas" class="form-control" name="notas" id="notas" cols="1" rows="5"></textarea>
+        </div>
+      </div>
+
     <button type="submit" class="btn btn-success" (click)="onSubmit(clientesForm)">Submit</button>
 
+
+    <div></div>
   </div>

@@ -1,34 +1,58 @@
-export interface Cliente{
-	id?:number;
-	nombre:String;
-  telefonos?:String[];
-  cuentas?:Cuenta[];
+export interface Cliente {
+	id?: number;
+	nombre: String;
+	telefonos?: String[];
+	cuentas?: Cuenta[];
+	notas?:string;
+
 }
 
-export interface Cuenta{
-	banco:String;
-	numero:string;	
+export interface Cuenta {
+	banco: String;
+	numero: string;
 }
 
-export interface Prestamo{
-	id?:number;	
-	cliente:String;
-	tasa:Number;
-	tipoInteres:String;
-	capitalInicial;
-	montoCuotas?:Number;
-	cantidadCuotas?:Number;
-	fechaInicio?:Date;
-	diaPagoMes:number;
+export interface Prestamo {
+	numeroPrestamo?: string;
+	cliente: string;
+	tasa: number;
+	tipoInteres: string;
+	capitalPrestado:number;
+	montoCuotas?: number;
+	cantidadCuotas?: number;
+	fechaInicio?: Date;
+	diaPagoMes: number;
+	pagadoCapital?:number;
 }
+/* export class Movimiento {
+	constructor(
+	numeroPrestamo,
+	cliente: string,
+	tipoMovimiento: String,
+	interesDelPago:number=0,
+	capitalDelPago:number=0,
+	montoPrestado:number=0,
+	montoTotal: number=0,
+	fechaTransaccion: string,
+	fechaCorrespondiente?:string,
+	notas?:string,
+	id?: string
 
-export interface Movimiento{
-	id:number;
-	cliente:String;	
-	tipoMovimiento:String;
-	montoTotal:Number;
+
+	){}
+} */
+
+export interface Movimiento {
+	id?: string;
+	numeroPrestamo;
+	cliente: string;
+	tipoMovimiento: String;
+	interesDelPago:number;
 	capitalDelPago:number;
-	interesDelPago;
-	fechaTransaccion:String;
+	montoPrestado:number;
+	montoTotal: number;
+	fechaCorrespondiente?:Date;
+	fechaTransaccion: Date;
+	notas?:string;
 }
 

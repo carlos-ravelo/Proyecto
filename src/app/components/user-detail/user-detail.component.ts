@@ -18,7 +18,11 @@ export class UserDetailComponent implements OnInit {
   @Input() cliente: Cliente;
 
   save(): void {
-   // this.clientesService.updateCliente(this.cliente).subscribe(() => this.toggleEditMode());;
+
+    //Borramos los campos Vacios
+    this.cliente.cuentas = this.cliente.cuentas.filter(function(e) {  if (e.banco!="default"){ return e}})
+    this.cliente.telefonos = this.cliente.telefonos.filter(function(e) {   return e!=""})
+
    this.db.modificarCliente(this.cliente);
    this.toggleEditMode();
   }
@@ -46,7 +50,7 @@ export class UserDetailComponent implements OnInit {
   };
   addCuenta() {
     this.cliente.cuentas.push({
-      banco: "",
+      banco: "default",
       numero: ""
     });
 
