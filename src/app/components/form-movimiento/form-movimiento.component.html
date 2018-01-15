@@ -1,9 +1,9 @@
-<div class="list-group" class="col-sm-8">
+<div class="list-group" class="col-sm-8" >
   <h2>Agregar movimiento al prestamo</h2>
 
 
 
-  <form action="" method="">
+  <form >
 
     <div class="form-group">
       <label>Numero de Prestamo </label>
@@ -28,11 +28,17 @@
     <div class="form-group" *ngIf="tipoMovimiento=='desembolso'">
         <label>Monto prestado:</label>
         <input type="number" class="form-control" id="montoPrestado" placeholder="montoPrestado" name="montoPrestado" [(ngModel)]="movimiento.montoPrestado">
+        <div class="alert alert-danger" *ngIf="errorMontoPrestado">
+          <strong>error!</strong> El monto prestado puede ir vacio !
+        </div>
       </div>
       <div *ngIf="tipoMovimiento=='pago'">
     <div class="form-group" >
       <label>Interes del Pago:</label>
       <input type="number" class="form-control" id="interesDelPago" placeholder="interesDelPago" name="interesDelPago" [(ngModel)]="movimiento.interesDelPago">
+      <div class="alert alert-danger" *ngIf="errorInteresOCapital">
+        <strong>error!</strong> Introduzca el interes o el capital del pago !
+      </div>
     </div>
     <div class="form-group" >
       <label>Capital del pago:</label>
@@ -40,10 +46,11 @@
     </div>
     <div class="form-group" >
       <label>Monto Total:</label >
-      <label type="number" class="form-control" id="montoTotal" placeholder="Monto total" name="montoTotal" >
+      <label  class="form-control" id="montoTotal" placeholder="Monto total" name="montoTotal" >
         {{movimiento.interesDelPago+movimiento.capitalDelPago}}
       </label>
     </div>
+    
     <div >
       <label>Fecha Correspondiente</label>
       <input type="Date" class="form-control" id="fechaCorrespondiente" placeholder="Fecha Correspondiente" name="fechaCorrespondiente"
@@ -52,18 +59,17 @@
   </div>
     <div>
       <label>Fecha transaccion</label>
-      <input type="Date" class="form-control" id="fechaTransaccion" placeholder="Fecha transaccion" name="fechaTransaccion" [(ngModel)]="movimiento.fechaTransaccion">
+      <input [ngModel]="movimiento.fechaTransaccion|date:'yyyy-MM-dd'" name="fechaTransaccion" type="Date" class="form-control" id="fechaTransaccion"
+      placeholder="Fecha" (ngModelChange)="movimiento.fechaTransaccion = $event">
     </div>
 
     <div class="form-group">
       <label>Notas</label>
       <input type="text=" class="form-control" id="notas" placeholder="agregar notas" name="notas" [(ngModel)]="movimiento.notas">
     </div>
-
-
-
-    <button data-dismiss="modal" type="submit" class="btn btn-default" (click)="insertarMovimiento()">Submit</button>
+    <button   class="btn btn-default" (click)="insertarMovimiento()" data-dismiss="modal">Guardar</button>
 
   </form>
 
 </div>
+

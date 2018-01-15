@@ -17,49 +17,44 @@ export class DetallePrestamoComponent implements OnInit {
   @Input() prestamo: Prestamo;
   editMode: boolean = false;
   fechaProxPago: Date;
-  capitalPendiente: Number;
   montoAtraso: Number;
   capitalPagado: Number;
-  calculatedValues:any;
-  movimiento:Movimiento;
-  movimientoAmodificar:Movimiento;
+  calculatedValues: any;
+  movimiento: Movimiento;
 
-  
-  getMovimientoAmodificar(){
-    this.db.obtenerMovimientoInicial(this.prestamo).subscribe(movimiento=>{
-      this.movimientoAmodificar = movimiento[0]
-      this.movimiento = movimiento[0]
-      if (!this.movimiento){
-        this.movimiento = {
-          numeroPrestamo: '',
-          cliente: "",
-          tipoMovimiento: "",
-          montoTotal: 0,
-          notas: "",
-          interesDelPago:0,
-          capitalDelPago:0,
-          montoPrestado:0,
-          fechaTransaccion:new Date()
 
-        }
-      }
+
+  obtenerMovimientoAmodificar() {
+    this.db.obtenerMovimientoInicial(this.prestamo).subscribe(movimiento => {
+      this.movimiento = movimiento[0];
+
     })
   }
   save(): void {
+   
     this.movimiento.numeroPrestamo = this.prestamo.numeroPrestamo;
     this.movimiento.cliente = this.prestamo.cliente;
     this.movimiento.tipoMovimiento = "inicial";
     this.movimiento.montoTotal = this.prestamo.capitalPrestado;
-    this.movimiento.montoPrestado = this.prestamo.capitalPrestado;
-    this.movimiento.fechaTransaccion = this.prestamo.fechaInicio;
+    this.movimiento.fechaTransaccion = new Date(this.prestamo.fechaInicio);
     this.movimiento.notas = "Entrada automatica"
-    this.db.modificarPrestamo(this.prestamo,this.movimiento);
-    if (this.movimiento.id){
+    this.prestamo.fechaInicio = new Date(this.prestamo.fechaInicio);
     this.db.modificarMovimiento(this.movimiento);
-  }
-  else{
-    this.db.insertarMovimiento(this.movimiento);
-  }
+
+    this.db.obtenerMovimientosPorPrestamo(this.prestamo.numeroPrestamo).subscribe((listaMovimientos) => {
+      var valoresCalculados = this.db.calcularValoresPrestamo(listaMovimientos, this.prestamo);
+      this.prestamo.capitalPrestado = valoresCalculados.capitalPrestado;
+      this.prestamo.pagadoCapital = valoresCalculados.pagadoCapital;
+      this.prestamo.montoCuotas = valoresCalculados.montoCuotas;
+      this.prestamo.capitalPendiente = valoresCalculados.capitalPendiente;
+      this.db.modificarPrestamo(this.prestamo);
+
+    })
+
+
+
+
+
     this.toggleEditMode()
   }
   toggleEditMode() {
@@ -67,12 +62,16 @@ export class DetallePrestamoComponent implements OnInit {
   }
   identify(index, post: Number) { return 0 }
 
-  constructor(private clientesService: ClientesService,private db: DataFirebaseService) {
+  constructor(private clientesService: ClientesService, private db: DataFirebaseService) {
   }
   ngOnInit() {
-    this.getMovimientoAmodificar();
+    this.obtenerMovimientoAmodificar();
+    this.db.obtenerMovimientosPorPrestamo(this.prestamo.numeroPrestamo).subscribe((Lista) => {
+    })
+   
+ 
 
-    
+
   }
 
 }

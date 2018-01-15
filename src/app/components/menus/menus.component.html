@@ -26,9 +26,13 @@
             <!-- /input-group -->
           </li>
           <li>
-            <a routerLink="/clientes">
+            <a routerLink="/login">
               <i class="fa fa-dashboard"></i> Dashboard</a>
           </li>
+          <li>
+              <a routerLink="/login" (click)=" logOut()">
+                <i class="fa fa-sign-out" aria-hidden="true"></i> LogOut</a>
+            </li>
           <li>
             <a routerLink="/clientes">
               <i class="fa fa-users" aria-hidden="true"></i> Clientes
@@ -57,42 +61,8 @@
                 <a routerLink="/add-prestamo">Agregar</a>
               </li>
             </ul>
-         </li>
+          </li>
 
-         <li>
-          <a routerLink="/calculadora-prestamos">
-            <i class="fa fa-university" aria-hidden="true"></i> Calculadora
-            <span class="fa arrow"></span>
-          </a>
-          <ul class="nav nav-second-level">
-            <li>
-              <a routerLink="/calculadora-prestamos">Lista</a>
-            </li>
-       
-          </ul>
-       </li>
-
-
-
-
-
-          <!--           <li>
-            <a routerLink="/movimientos">
-              <i class="fa fa-bar-chart-o fa-fw"></i> Movimientos
-              <span class="fa arrow"></span>
-            </a>
-            <ul class="nav nav-second-level">
-              <li>
-                <a routerLink="/movimientos">Lista</a>
-              </li>
-              <li>
-                <a routerLink="/add-movimiento">Agregar</a>
-              </li>
-              <li>
-                <a routerLink="/movimientos-por-prestamo">Agregar</a>
-              </li>
-            </ul>
-          </li> -->
         </ul>
       </div>
       <!-- /.sidebar-collapse -->

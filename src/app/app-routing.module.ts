@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, } from '@angular/router';
-import { UserListComponent } from './components/user-list/user-list.component';
+import { ListaClientesComponent } from './components/lista-clientes/lista-clientes.component';
 import { ListaPrestamosComponent } from './components/lista-prestamos/lista-prestamos.component';
 import { FormClientesComponent } from './components/form-clientes/form-clientes.component'
 import { FormPrestamosComponent } from './components/form-prestamos/form-prestamos.component'
@@ -8,18 +8,20 @@ import { FormMovimientoComponent } from './components/form-movimiento/form-movim
 import { ListaMovimientosComponent } from './components/lista-movimientos/lista-movimientos.component'
 import { MovimientosPorPrestamoComponent } from './components/movimientos-por-prestamo/movimientos-por-prestamo.component'
 import { CalculadoraPrestamosComponent } from './components/calculadora-prestamos/calculadora-prestamos.component'
-
+import {LoginComponent} from './components/login/login.component'
+import { CanActivateviaAuthGuardService } from './servicios/can-activatevia-auth-guard.service';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/clientes', pathMatch: 'full' },
-  { path: 'clientes', component: UserListComponent },
-  { path: 'add-cliente', component: FormClientesComponent },
-  { path: 'add-prestamo', component: FormPrestamosComponent },
-  { path: 'movimientos', component: ListaMovimientosComponent },
-  { path: 'add-movimiento', component: FormMovimientoComponent },
-  { path: 'prestamos', component: ListaPrestamosComponent },
-  { path: 'movimientos-por-prestamo', component: MovimientosPorPrestamoComponent },
-  { path: 'calculadora-prestamos', component: CalculadoraPrestamosComponent }
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'clientes', component: ListaClientesComponent,canActivate:[CanActivateviaAuthGuardService] },
+  { path: 'add-cliente', component: FormClientesComponent,canActivate:[CanActivateviaAuthGuardService] },
+  { path: 'add-prestamo', component: FormPrestamosComponent,canActivate:[CanActivateviaAuthGuardService] },
+  { path: 'movimientos', component: ListaMovimientosComponent,canActivate:[CanActivateviaAuthGuardService] },
+  { path: 'add-movimiento', component: FormMovimientoComponent,canActivate:[CanActivateviaAuthGuardService] },
+  { path: 'prestamos', component: ListaPrestamosComponent,canActivate:[CanActivateviaAuthGuardService] },
+  { path: 'movimientos-por-prestamo', component: MovimientosPorPrestamoComponent,canActivate:[CanActivateviaAuthGuardService] },
+  { path: 'calculadora-prestamos', component: CalculadoraPrestamosComponent,canActivate:[CanActivateviaAuthGuardService] },
+  { path: 'login', component: LoginComponent }
 
 
 

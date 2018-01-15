@@ -5,6 +5,9 @@
     <label>Nombre</label>
     <input type="text" placeholder="Nombre" class="form-control" id="cuenta" name="nombre" required [(ngModel)]="cliente.nombre"
       required>
+      <div class="alert alert-danger" *ngIf="errorNombre">
+          <strong>error!</strong> El nombre de cliente no puede ir vacio !
+        </div>
   </div>
   <div>
     <div class="form-group">
@@ -14,9 +17,9 @@
         DEL</button>
     </div>
 
-    <div class="form-group" *ngFor="let cuenta of cliente.cuentas;index as i;trackBy:identify ">
+    <div class="form-group"  *ngFor="let cuenta of cliente.cuentas;index as i;trackBy:identify ">
       <label>Banco: </label>
-      <select name="listaBancos" required id="disabledSelect" class="form-control" [(ngModel)]="cliente.cuentas[i].banco">
+      <select name="listaBancos"   id="disabledSelect" class="form-control invalid" [(ngModel)]="cliente.cuentas[i].banco">
         <option value="default" >Seleccione</option>
         <option *ngFor="let banco of listaBancos">{{banco}}</option>
       </select>
@@ -39,8 +42,11 @@
         </div>
       </div>
 
-    <button type="submit" class="btn btn-success" (click)="onSubmit(clientesForm)">Submit</button>
+    <button type="submit" class="btn btn-success" (click)="onSubmit()">Submit</button>
 
 
     <div></div>
   </div>
+
+
+ 

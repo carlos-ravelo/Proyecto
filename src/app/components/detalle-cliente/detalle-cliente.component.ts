@@ -6,12 +6,12 @@ import{DataFirebaseService} from '../../servicios/data-firebase.service'
 
 
 @Component({
-  selector: 'app-user-detail',
-  templateUrl: './user-detail.component.html',
-  styleUrls: ['./user-detail.component.css'],
+  selector: 'app-detalle-cliente',
+  templateUrl: './detalle-cliente.component.html',
+  styleUrls: ['./detalle-cliente.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class UserDetailComponent implements OnInit {
+export class DetalleClienteComponent implements OnInit {
 
   listaBancos: String[];
   editMode: boolean = false;

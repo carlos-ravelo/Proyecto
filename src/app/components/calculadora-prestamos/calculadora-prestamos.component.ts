@@ -2,6 +2,8 @@ import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { Cliente,Movimiento,Prestamo } from '../../clases/cliente'
 import { ClientesService } from '../../servicios/clientes.service';
 import { DataFirebaseService } from '../../servicios/data-firebase.service'
+import { CurrencyPipe } from '@angular/common';
+
 
 
 @Component({
@@ -15,7 +17,7 @@ export class CalculadoraPrestamosComponent implements OnInit {
   prestamo: Prestamo;
   movimiento:Movimiento;
 
-  constructor(private clientesService: ClientesService, private db: DataFirebaseService) {
+  constructor(private currencyPipe: CurrencyPipe,private clientesService: ClientesService, private db: DataFirebaseService) {
   }
   getOnservableCliente(): void {
     this.clientesService.obtenerListaClientesObservable().subscribe(listaCliente => { this.listaCliente = listaCliente; });
@@ -24,12 +26,11 @@ export class CalculadoraPrestamosComponent implements OnInit {
   clear() {
     this.prestamo = {
       cliente: '',
-      tipoInteres: "",
       capitalPrestado: 0,
       tasa: 0,
       montoCuotas: 0,
       cantidadCuotas: 0,
-      diaPagoMes: 0
+      diaPagoMes: 0,
     }
     this.movimiento = {
       numeroPrestamo: '',
@@ -65,6 +66,13 @@ export class CalculadoraPrestamosComponent implements OnInit {
     })
 
   }
+  calcularMontoCuota(){
+    if(this.prestamo.capitalPrestado>0&&this.prestamo.tasa>0&&this.prestamo.cantidadCuotas>0){
+  let r = this.prestamo.tasa/12/100;
+  let pv = this.prestamo.capitalPrestado;
+  let n = this.prestamo.cantidadCuotas * -1
+  this.prestamo.montoCuotas = parseFloat((r*(pv)/(1-Math.pow((1+r),n))*100/100).toFixed(2));
+  }}
 
   insertarMovimiento(){
     this.movimiento.numeroPrestamo = this.prestamo.numeroPrestamo;
@@ -82,14 +90,16 @@ export class CalculadoraPrestamosComponent implements OnInit {
     this.getOnservableCliente();
     this.clear();
     this.ObtenerSiguientePrestamo();
+    
   }
 
   onSubmit() {
     console.log("submitted");
     this.db.insertarPrestamos(this.prestamo);
     this.insertarMovimiento();
-
     this.clear();
 
-  }
+  
+}
+
 }

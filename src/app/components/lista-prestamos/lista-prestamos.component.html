@@ -2,38 +2,42 @@
   <h1>Lista de Prestamos</h1>
   <a class="fa fa-plus-square-o btn btn-link" routerLink="/add-prestamo">Agregar prestamo</a>
   <a type="button" class="fa fa-times btn btn-link" (click)="borrarPrestamo()">Borrar prestamo</a>
-  
+
+  <div class="form-group">
+    <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+    />
+  </div>
   <div class="alert alert-danger" *ngIf="!mostrarTodo">
-      <strong>Nota:</strong> No tiene Prestamos Para visualizar, inicie haciendo click en "Agregar nuevo prestamo"
-    </div>
+    <strong>Nota:</strong> No tiene Prestamos Para visualizar, inicie haciendo click en "Agregar nuevo prestamo"
+  </div>
 
 
   <div style="overflow-x:auto;">
-<input type="text" id="myInput" (keyup)="myFunction()" placeholder="Search for names..">
+    <input type="text" id="myInput" (keyup)="myFunction()" placeholder="Search for names..">
 
-  <table id="myTable" class="table table-hover condensed" *ngIf="mostrarTodo">
-    <thead>
-      <tr>
-        <th>Prestamo</th>
-        <th>Cliente</th>
-        <th>Capital  prestado</th>
-        <th>Prox. Interes</th>
-        <th>Prox. Capital</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let prestamo of listaPrestamos" (click)="onSelect(prestamo)" [ngClass]="{'active':prestamo==prestamoActual}" >
-        <td>{{prestamo.numeroPrestamo}}</td>
-        <td>{{prestamo.cliente}}</td>
-        <td>{{prestamo.capitalPrestado| currency}}</td>
-        <td>{{prestamo.capitalPrestado*prestamo.tasa/100| currency}}</td>
-        <td>{{(prestamo.montoCuotas-(prestamo.capitalPrestado*prestamo.tasa/100)| currency)}}</td>
-      </tr>
-    </tbody>
-  </table>
+    <table id="myTable" class="table table-hover condensed" *ngIf="mostrarTodo">
+      <thead>
+        <tr>
+          <th>Prestamo</th>
+          <th>Cliente</th>
+          <th>Capital pendiente</th>
+          <th>Prox. Interes</th>
+          <th>Prox. Capital</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prestamo of listaPrestamos" (click)="onSelect(prestamo)" [ngClass]="{'active':prestamo==prestamoActual}">
+          <td>{{prestamo.numeroPrestamo}}</td>
+          <td>{{prestamo.cliente}}</td>
+          <td>{{prestamo.capitalPendiente| currency}}</td>
+          <td>{{prestamo.capitalPendiente*prestamo.tasa/100/12| currency}}</td>
+          <td>{{(prestamo.montoCuotas-(prestamo.capitalPrestado*prestamo.tasa/100/12)| currency)}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-<!-- 
+  <!-- 
   <button *ngFor="let prestamo of listaPrestamos" (click)="onSelect(prestamo)" [ngClass]="{'list-group-item': true,'active':prestamo==prestamoActual}">
     {{prestamo.id}} - Cliente: {{prestamo.cliente}}
   </button> -->
@@ -42,26 +46,25 @@
 
   <!-- nav bar -->
   <div *ngIf="mostrarTodo">
-  <div class="container" >
-  <div class="col-sm-8">
-    <ul class="nav nav-tabs">
-      <li [ngClass]="{'active':opcionMenu=='Detalles'}" class="active" (click)="cambiarOpcionMenu('Detalles')">
-        <a role="button">Detalles</a>
-      </li>
-      <li [ngClass]="{'active':opcionMenu=='Movimientos'}" (click)="cambiarOpcionMenu('Movimientos')">
-        <a role="button">Movimientos</a>
-      </li>
-    </ul>
-  </div>
-  </div>
+    <div class="container">
+      <div class="col-sm-8">
+        <ul class="nav nav-tabs">
+          <li [ngClass]="{'active':opcionMenu=='Detalles'}" class="active" (click)="cambiarOpcionMenu('Detalles')">
+            <a role="button">Detalles</a>
+          </li>
+          <li [ngClass]="{'active':opcionMenu=='Movimientos'}" (click)="cambiarOpcionMenu('Movimientos')">
+            <a role="button">Movimientos</a>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-  <div *ngIf='opcionMenu=="Detalles"' >
-    <app-detalle-prestamo [prestamo]=prestamoActual></app-detalle-prestamo>
-  </div>
+    <div *ngIf='opcionMenu=="Detalles"'>
+      <app-detalle-prestamo [prestamo]=prestamoActual></app-detalle-prestamo>
+    </div>
 
-    <div *ngIf='opcionMenu=="Movimientos"' >
+    <div *ngIf='opcionMenu=="Movimientos"'>
       <app-movimientos-por-prestamo [prestamo]=prestamoActual></app-movimientos-por-prestamo>
+    </div>
   </div>
 </div>
-</div>
-

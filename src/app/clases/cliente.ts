@@ -16,13 +16,14 @@ export interface Prestamo {
 	numeroPrestamo?: string;
 	cliente: string;
 	tasa: number;
-	tipoInteres: string;
 	capitalPrestado:number;
 	montoCuotas?: number;
 	cantidadCuotas?: number;
 	fechaInicio?: Date;
 	diaPagoMes: number;
 	pagadoCapital?:number;
+	capitalPendiente?:number;
+
 }
 /* export class Movimiento {
 	constructor(
@@ -46,7 +47,7 @@ export interface Movimiento {
 	id?: string;
 	numeroPrestamo;
 	cliente: string;
-	tipoMovimiento: String;
+	tipoMovimiento: string;
 	interesDelPago:number;
 	capitalDelPago:number;
 	montoPrestado:number;

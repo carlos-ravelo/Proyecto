@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
+
 
 @Component({
   selector: 'app-menus',
@@ -8,7 +11,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class MenusComponent implements OnInit {
 
-  constructor() { }
+  constructor(public afAuth: AngularFireAuth) { }
+  logOut(){
+    this.afAuth.auth.signOut();
+  }
 
   ngOnInit() {
   }

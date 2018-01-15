@@ -3,10 +3,10 @@ import { NgModule } from '@angular/core';
 import {ClientesService} from './servicios/clientes.service'
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
-import { Routes, RouterModule} from '@angular/router';
+import { Routes, RouterModule,ActivatedRoute} from '@angular/router';
 import { AppComponent } from './app.component';
-import { UserListComponent } from './components/user-list/user-list.component';
-import { UserDetailComponent } from './components/user-detail/user-detail.component';
+import { ListaClientesComponent } from './components/lista-clientes/lista-clientes.component';
+import { DetalleClienteComponent } from './components/detalle-cliente/detalle-cliente.component';
 import {ListaPrestamosComponent} from './components/lista-prestamos/lista-prestamos.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DetallePrestamoComponent } from './components/detalle-prestamo/detalle-prestamo.component';
@@ -30,6 +30,13 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { CalculadoraPrestamosComponent } from './components/calculadora-prestamos/calculadora-prestamos.component';
+import { CurrencyPipe,DatePipe } from '@angular/common';
+import { AngularFireAuth } from 'angularfire2/auth';
+import {CanActivateviaAuthGuardService} from './servicios/can-activatevia-auth-guard.service'
+
+//NGX-Bootstrap
+import { AlertModule } from 'ngx-bootstrap';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 
@@ -38,8 +45,8 @@ import { CalculadoraPrestamosComponent } from './components/calculadora-prestamo
 @NgModule({
   declarations: [
     AppComponent,
-    UserListComponent,
-    UserDetailComponent,
+    ListaClientesComponent,
+    DetalleClienteComponent,
     ListaPrestamosComponent,
     DetallePrestamoComponent,
     FormClientesComponent,
@@ -58,14 +65,14 @@ import { CalculadoraPrestamosComponent } from './components/calculadora-prestamo
     AppRoutingModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
-    InMemoryDataService, { dataEncapsulation: false }    
+    InMemoryDataService, { dataEncapsulation: false }  ,
     ),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(),
-
-    
+    AlertModule.forRoot(),ModalModule.forRoot() 
   ],
-  providers: [ClientesService,AngularFireModule,DataFirebaseService],
+  providers: [ClientesService,AngularFireModule,DataFirebaseService,CurrencyPipe,DatePipe,AngularFireAuth,
+    CanActivateviaAuthGuardService,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

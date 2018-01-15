@@ -17,6 +17,7 @@ export class ListaPrestamosComponent implements OnInit {
   prestamosFiltrados: Prestamo[];
   currentCapitalPagado;
   mostrarTodo:boolean;
+  loading:boolean;
 
 
   constructor(private db: DataFirebaseService, private clientesService: ClientesService) { }
@@ -27,42 +28,35 @@ export class ListaPrestamosComponent implements OnInit {
 
     this.prestamoActual = prestamo;
   }
-  getOnservablePrestamo(): void {
-    this.clientesService.obtenerListaPrestamosObservable().subscribe(listaPrestamos => {
-      this.listaPrestamos = listaPrestamos;
-      this.prestamoActual = this.listaPrestamos[0];
-      this.opcionMenu = "Detalles";
-    });
-  }
+  
 
-  getOnservablePrestamoFirestore(): void {
+  ObtenerPrestamos(): void {
+    this.loading = true;
     this.db.obtenerPrestamos().subscribe(listaPrestamos => {
-      if(listaPrestamos.length>0){this.opcionMenu = "Detalles";this.mostrarTodo= true}
-
-      const prestamoActualBackUp = this.prestamoActual; this.listaPrestamos = listaPrestamos;
-      if (!this.prestamoActual) {
-        this.prestamoActual = this.listaPrestamos[0];
+      if(listaPrestamos.length>0){/* this.opcionMenu = "Detalles"; */this.mostrarTodo= true}
+      this.listaPrestamos = listaPrestamos;
+      if (!this.listaPrestamos[0]){
+        this.mostrarTodo = false;
       }
-      else {
-        this.prestamoActual = this.listaPrestamos.find(o => o.numeroPrestamo === prestamoActualBackUp.numeroPrestamo);
-      }
-    });
+      this.prestamoActual = this.listaPrestamos[0];
+      this.loading = false;
+      
+     });
   }
 
 
   borrarPrestamo() {
     if (this.listaPrestamos.length > 1) {
       this.db.borrarPrestamo(this.prestamoActual);
+      this.prestamoActual = this.listaPrestamos[0];
     }
     else {
       alert("No puede borrar todos los Prestamos");
     }
   }
   ngOnInit() {
-    this.mostrarTodo = false;
-
-    this.getOnservablePrestamoFirestore();
-    console.log(this.listaPrestamos)
+    this.ObtenerPrestamos();
+    this.mostrarTodo = true;
 
   }
 

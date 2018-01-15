@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
-import { Cliente,Movimiento,Prestamo } from '../../clases/cliente'
+import { Component, OnInit, ViewEncapsulation, Input, } from '@angular/core';
+import { Cliente, Movimiento, Prestamo } from '../../clases/cliente'
 import { ClientesService } from '../../servicios/clientes.service';
 import { DataFirebaseService } from '../../servicios/data-firebase.service'
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 
 @Component({
@@ -11,37 +12,44 @@ import { DataFirebaseService } from '../../servicios/data-firebase.service'
   encapsulation: ViewEncapsulation.None
 })
 export class FormPrestamosComponent implements OnInit {
-
   listaCliente: Cliente[];
   prestamo: Prestamo;
-  movimiento:Movimiento;
+  movimiento: Movimiento;
+  errorCapitalInicial: boolean = false;
+  errorMontoCuotas: boolean = false;
+  errorCliente: boolean = false;
 
-  constructor(private clientesService: ClientesService, private db: DataFirebaseService) {
+  constructor(private clientesService: ClientesService, private db: DataFirebaseService, private datepipe: DatePipe) {
   }
-  getOnservableCliente(): void {
-    this.clientesService.obtenerListaClientesObservable().subscribe(listaCliente => { this.listaCliente = listaCliente; });
+  obtenerClientes(): void {
+    this.db.obtenerClientes().subscribe(listaCliente => { this.listaCliente = listaCliente; });
   }
 
   clear() {
     this.prestamo = {
+      numeroPrestamo: '',
       cliente: '',
-      tipoInteres: "",
       capitalPrestado: 0,
       tasa: 0,
       montoCuotas: 0,
       cantidadCuotas: 0,
-      diaPagoMes: 0
+      diaPagoMes: 0,
+      pagadoCapital: 0,
+      fechaInicio: new Date(),
+      capitalPendiente: 0,
+
     }
     this.movimiento = {
       numeroPrestamo: '',
-      cliente: "",
-      tipoMovimiento: "",
+      cliente: '',
+      tipoMovimiento: '',
       montoTotal: 0,
+      fechaCorrespondiente: new Date(),
       fechaTransaccion: new Date(),
-      notas: "",
-      interesDelPago:0,
-      capitalDelPago:0,
-      montoPrestado:0
+      notas: '',
+      interesDelPago: 0,
+      capitalDelPago: 0,
+      montoPrestado: 0
     }
 
   }
@@ -53,11 +61,11 @@ export class FormPrestamosComponent implements OnInit {
 
   ObtenerSiguientePrestamo() {
 
-    this.db.ObtenerSiguientePrestamo().subscribe(ultimoValor => {
-      if (ultimoValor[0]) {
+    this.db.ObtenerSiguientePrestamo().subscribe(ultimoPrestamo => {
+      if (ultimoPrestamo[0]) {
         var intermedio: number;
-        intermedio = parseInt(ultimoValor[0].numeroPrestamo, 10) + 1;
-        this.prestamo.numeroPrestamo = this.pad(intermedio, 5, "0");
+        ultimoPrestamo[0].numeroPrestamo = parseInt(ultimoPrestamo[0].numeroPrestamo, 10) + 1;
+        this.prestamo.numeroPrestamo = this.pad(ultimoPrestamo[0].numeroPrestamo, 5, "0");
       }
       else {
         this.prestamo.numeroPrestamo = "00001"
@@ -67,7 +75,7 @@ export class FormPrestamosComponent implements OnInit {
 
   }
 
-  insertarMovimiento(){
+  insertarMovimiento() {
     this.movimiento.numeroPrestamo = this.prestamo.numeroPrestamo;
     this.movimiento.cliente = this.prestamo.cliente;
     this.movimiento.tipoMovimiento = "inicial";
@@ -80,16 +88,32 @@ export class FormPrestamosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getOnservableCliente();
+
+    this.obtenerClientes();
     this.clear();
+    this.prestamo.fechaInicio = new Date("2018-01-10")
+    console.log(this.prestamo.fechaInicio)
+
     this.ObtenerSiguientePrestamo();
+  }
+  calcularMontoCuota() {
+    if (this.prestamo.capitalPrestado > 0 && this.prestamo.tasa > 0 && this.prestamo.cantidadCuotas > 0) {
+      let r = this.prestamo.tasa / 12 / 100;
+      let pv = this.prestamo.capitalPrestado;
+      let n = this.prestamo.cantidadCuotas * -1
+      this.prestamo.montoCuotas = parseFloat((r * (pv) / (1 - Math.pow((1 + r), n)) * 100 / 100).toFixed(2));
+    }
   }
 
   onSubmit() {
+    this.prestamo.fechaInicio = new Date(this.prestamo.fechaInicio)
+    if (this.prestamo.cliente == "default" || this.prestamo.cliente == "") { this.errorCliente = true; setTimeout(() => { this.errorCliente = false; }, 2000); return; }
+    if (this.prestamo.capitalPrestado == 0) { this.errorCapitalInicial = true; setTimeout(() => { this.errorCapitalInicial = false; }, 2000); return; }
+    if (this.prestamo.montoCuotas == 0) { this.errorMontoCuotas = true; setTimeout(() => { this.errorMontoCuotas = false; }, 2000); return; }
+  
     console.log("submitted");
     this.db.insertarPrestamos(this.prestamo);
     this.insertarMovimiento();
-
     this.clear();
 
   }
