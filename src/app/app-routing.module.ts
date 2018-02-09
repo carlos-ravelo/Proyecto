@@ -22,10 +22,6 @@ const routes: Routes = [
   { path: 'add-movimiento', component: FormMovimientoComponent,canActivate:[CanActivateviaAuthGuardService] },
   { path: 'prestamos', component: ListaPrestamosComponent,canActivate:[CanActivateviaAuthGuardService] },
   { path: 'movimientos-por-prestamo', component: MovimientosPorPrestamoComponent,canActivate:[CanActivateviaAuthGuardService] },
-
-
-
-
 ]
 
 @NgModule({
