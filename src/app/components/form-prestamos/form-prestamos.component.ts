@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewEncapsulation, Input, } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input,Output, Inject,EventEmitter} from '@angular/core';
 import { Cliente, Movimiento, Prestamo } from '../../clases/cliente'
 import { ClientesService } from '../../servicios/clientes.service';
 import { DataFirebaseService } from '../../servicios/data-firebase.service'
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import {MAT_DIALOG_DATA,MatDialogRef} from '@angular/material';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class FormPrestamosComponent implements OnInit {
   errorMontoCuotas: boolean = false;
   errorCliente: boolean = false;
 
-  constructor(private clientesService: ClientesService, private db: DataFirebaseService, private datepipe: DatePipe) {
+  constructor(private clientesService: ClientesService, private db: DataFirebaseService, private datepipe: DatePipe,public dialogRef: MatDialogRef<FormPrestamosComponent>) {
   }
   obtenerClientes(): void {
     this.db.obtenerClientes().subscribe(listaCliente => { this.listaCliente = listaCliente; });
@@ -28,7 +29,7 @@ export class FormPrestamosComponent implements OnInit {
   clear() {
     this.prestamo = {
       numeroPrestamo: '',
-      cliente: '',
+      cliente: 'default',
       capitalPrestado: 0,
       tasa: 0,
       montoCuotas: 0,
@@ -51,6 +52,7 @@ export class FormPrestamosComponent implements OnInit {
       capitalDelPago: 0,
       montoPrestado: 0
     }
+    
 
   }
   pad(n, width, z) {
@@ -104,17 +106,20 @@ export class FormPrestamosComponent implements OnInit {
       this.prestamo.montoCuotas = parseFloat((r * (pv) / (1 - Math.pow((1 + r), n)) * 100 / 100).toFixed(2));
     }
   }
-
-  onSubmit() {
+  abrirModalFormClientes(){
+    this.dialogRef.close("abrirModalFormCliente");
+  }
+  crearPrestamo() {
     this.prestamo.fechaInicio = new Date(this.prestamo.fechaInicio)
+    this.prestamo.capitalPendiente = this.prestamo.capitalPrestado;
     if (this.prestamo.cliente == "default" || this.prestamo.cliente == "") { this.errorCliente = true; setTimeout(() => { this.errorCliente = false; }, 2000); return; }
     if (this.prestamo.capitalPrestado == 0) { this.errorCapitalInicial = true; setTimeout(() => { this.errorCapitalInicial = false; }, 2000); return; }
     if (this.prestamo.montoCuotas == 0) { this.errorMontoCuotas = true; setTimeout(() => { this.errorMontoCuotas = false; }, 2000); return; }
-  
-    console.log("submitted");
     this.db.insertarPrestamos(this.prestamo);
     this.insertarMovimiento();
     this.clear();
+    this.dialogRef.close();
+
 
   }
 }

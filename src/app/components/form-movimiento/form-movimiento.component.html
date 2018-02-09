@@ -1,75 +1,57 @@
-<div class="list-group" class="col-sm-8" >
-  <h2>Agregar movimiento al prestamo</h2>
-
-
-
-  <form >
-
+<h1 mat-dialog-title>Agregar Prestamo a la Base de datos</h1>
+<mat-dialog-content>
+  <div class="list-group" class="col-sm-8">
     <div class="form-group">
       <label>Numero de Prestamo </label>
-      <label class="form-control" disabled>{{prestamo.numeroPrestamo}}</label> 
-
+      <label class="form-control" disabled>{{prestamo.numeroPrestamo}}</label>
     </div>
-
     <div class="form-group">
       <label id="cliente">Cliente</label>
-      <label class="form-control" disabled>{{prestamo.cliente}}</label> 
-
-      
+      <label class="form-control" disabled>{{prestamo.cliente}}</label>
     </div>
-
-    <div class="form-group">
-      <label id="cliente">Tipo de Movimiento</label>
-      <select name="tipoMovimiento" id="tipoMovimiento" [(ngModel)]="tipoMovimiento">
-        <option value="pago">pago</option>
-        <option value="desembolso">desembolso</option>
-      </select>
-    </div>
-    <div class="form-group" *ngIf="tipoMovimiento=='desembolso'">
-        <label>Monto prestado:</label>
-        <input type="number" class="form-control" id="montoPrestado" placeholder="montoPrestado" name="montoPrestado" [(ngModel)]="movimiento.montoPrestado">
-        <div class="alert alert-danger" *ngIf="errorMontoPrestado">
-          <strong>error!</strong> El monto prestado puede ir vacio !
+    <mat-form-field>
+      <mat-select (change)="cambioTipoMovimiento()" [(value)]="movimiento.tipoMovimiento" placeholder="Tipo de Movimiento">
+        <mat-option value="pago">pago </mat-option>
+        <mat-option value="desembolso">desembolso </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="movimiento.tipoMovimiento=='desembolso'">
+      <input matInput type="number" placeholder="Monto prestado:" id="montoPrestado" name="montoPrestado" [(ngModel)]="movimiento.montoPrestado">
+      <div class="alert alert-danger" *ngIf="errorMontoPrestado">
+        <strong>error!</strong> El monto prestado no puede ser 0 !
+      </div>
+    </mat-form-field>
+    <div *ngIf="movimiento.tipoMovimiento=='pago'">
+      <mat-form-field>
+        <input matInput type="number" placeholder="interes Del Pago :" id="interesDelPago" name="interesDelPago" [(ngModel)]="movimiento.interesDelPago">
+        <div class="alert alert-danger" *ngIf="errorInteresOCapital">
+          <strong>error!</strong> Introduzca el interes o el capital del pago !
         </div>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="number" placeholder="Capital del pago :" id="capitalDelPago" name="capitalDelPago" [(ngModel)]="movimiento.capitalDelPago">
+      </mat-form-field>
+      <div class="form-group">
+        <label>Monto Total:</label>
+        <label class="form-control" id="montoTotal" placeholder="Monto total" name="montoTotal">
+          {{movimiento.interesDelPago+movimiento.capitalDelPago}}
+        </label>
       </div>
-      <div *ngIf="tipoMovimiento=='pago'">
-    <div class="form-group" >
-      <label>Interes del Pago:</label>
-      <input type="number" class="form-control" id="interesDelPago" placeholder="interesDelPago" name="interesDelPago" [(ngModel)]="movimiento.interesDelPago">
-      <div class="alert alert-danger" *ngIf="errorInteresOCapital">
-        <strong>error!</strong> Introduzca el interes o el capital del pago !
-      </div>
+      <mat-form-field>
+        <input matInput type="Date" placeholder="Fecha correspondiente :" id="fechaCorrespondiente" name="fechaCorrespondiente" [(ngModel)]="movimiento.fechaCorrespondiente">
+      </mat-form-field>
     </div>
-    <div class="form-group" >
-      <label>Capital del pago:</label>
-      <input type="number" class="form-control" id="capitalDelPago" placeholder="capitalDelPago" name="capitalDelPago" [(ngModel)]="movimiento.capitalDelPago">
-    </div>
-    <div class="form-group" >
-      <label>Monto Total:</label >
-      <label  class="form-control" id="montoTotal" placeholder="Monto total" name="montoTotal" >
-        {{movimiento.interesDelPago+movimiento.capitalDelPago}}
-      </label>
-    </div>
-    
-    <div >
-      <label>Fecha Correspondiente</label>
-      <input type="Date" class="form-control" id="fechaCorrespondiente" placeholder="Fecha Correspondiente" name="fechaCorrespondiente"
-        [(ngModel)]="movimiento.fechaCorrespondiente">
-    </div>
+    <mat-form-field>
+      <input matInput type="Date" placeholder="Fecha transaccion" id="fechaTransaccion" name="fechaTransaccion" [ngModel]="movimiento.fechaTransaccion|date:'yyyy-MM-dd'"
+        (ngModelChange)="movimiento.fechaTransaccion = $event">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="agregar notas" id="fechaTransaccion" name="notas" [(ngModel)]="movimiento.notas">
+    </mat-form-field>
   </div>
-    <div>
-      <label>Fecha transaccion</label>
-      <input [ngModel]="movimiento.fechaTransaccion|date:'yyyy-MM-dd'" name="fechaTransaccion" type="Date" class="form-control" id="fechaTransaccion"
-      placeholder="Fecha" (ngModelChange)="movimiento.fechaTransaccion = $event">
-    </div>
-
-    <div class="form-group">
-      <label>Notas</label>
-      <input type="text=" class="form-control" id="notas" placeholder="agregar notas" name="notas" [(ngModel)]="movimiento.notas">
-    </div>
-    <button   class="btn btn-default" (click)="insertarMovimiento()" data-dismiss="modal">Guardar</button>
-
-  </form>
-
-</div>
-
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button (click)="insertarMovimiento()">Guardar</button>
+</mat-dialog-actions>

@@ -23,6 +23,7 @@ export interface Prestamo {
 	diaPagoMes: number;
 	pagadoCapital?:number;
 	capitalPendiente?:number;
+	notas?:string;
 
 }
 /* export class Movimiento {

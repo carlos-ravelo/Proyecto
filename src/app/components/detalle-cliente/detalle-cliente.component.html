@@ -16,16 +16,20 @@
   <ul class="dropdown-menu">
 
     <li>
-      <a href="#">Ver prestamos asociados</a>
+      <a routerLink="/prestamos">Ver prestamos asociados</a>
     </li>
   </ul>
 </div>
 
 <!-- /Controles de abajo -->
 
-<h5> Detalles:</h5>
+<mat-card>
+    <mat-card-title>
+        <h5> Detalles:</h5>
+        </mat-card-title>
+
   <div class="container">
-    <div class="col-sm-4">
+    <div >
       <label>Nombre:</label>
       <p *ngIf="!editMode">{{cliente.nombre}}</p>
       <input name="nombre" *ngIf="editMode" [(ngModel)]="cliente.nombre" placeholder="nombre" class="form-control input-sm" required>
@@ -33,7 +37,7 @@
   </div>
 
   <div class="container">
-    <div class="col-sm-4">
+    <div >
       <b>Cuentas:</b>
       <span *ngIf="editMode">
         <a class="fa fa-plus-square-o btn btn-link" aria-hidden="true" (click)="addCuenta()">Add</a>
@@ -57,7 +61,7 @@
   </div>
 
   <div class="container">
-    <div class="col-sm-4">
+    <div >
       <b>Telefonos:</b>
       <span *ngIf="editMode">
         <a (click)="addTelefono()" class="fa fa-plus-square-o btn btn-link" aria-hidden="true">Add</a>
@@ -80,8 +84,8 @@
     </div>
   </div>
 
-  <div class="container col-sm-4">
-    <div class="col-sm-4">
+  <div class="container">
+    <div >
       <b>Notas:</b>
       <p *ngIf="!editMode"> {{cliente.notas}}</p>
       <div class="form-group" *ngIf="editMode">
@@ -90,5 +94,5 @@
     </div>
 
   </div>
-
+</mat-card>
 

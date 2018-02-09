@@ -3,6 +3,9 @@ import { Cliente } from '../../clases/cliente';
 import { ClientesService } from '../../servicios/clientes.service';
 import { DataFirebaseService } from '../../servicios/data-firebase.service'
 import { Observable } from 'rxjs/Observable';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { FormClientesComponent } from '../form-clientes/form-clientes.component';
+
 
 
 @Component({
@@ -14,20 +17,25 @@ import { Observable } from 'rxjs/Observable';
 export class ListaClientesComponent implements OnInit {
   listaCliente: Cliente[];
   clienteActual: Cliente;
+  loading:boolean;
 
-  constructor(private db: DataFirebaseService) {
+
+  constructor(private db: DataFirebaseService,public dialog: MatDialog) {
   }
 
   ngOnInit() {
     this.obtenerClientes();
 
   }
+  openClienteModal(): void {
+    let dialogRef = this.dialog.open(FormClientesComponent, {       });}
 
   onSelect(cliente: Cliente): void {
     this.clienteActual = cliente;
   }
 
   obtenerClientes(): void {
+    this.loading = true;
     this.db.obtenerClientes().subscribe(listaCliente => {
       const clienteActualBackUp = this.clienteActual; this.listaCliente = listaCliente;
       if (!this.clienteActual) {
@@ -36,6 +44,8 @@ export class ListaClientesComponent implements OnInit {
       else {
         this.clienteActual = this.listaCliente.find(o => o.id === clienteActualBackUp.id);
       }
+      this.loading = false;
+
     });
   }
   borrarCliente() {

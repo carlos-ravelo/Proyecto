@@ -3,6 +3,7 @@ import { Cliente } from '../../clases/cliente';
 import { ClientesService } from '../../servicios/clientes.service';
 import { DataFirebaseService } from '../../servicios/data-firebase.service'
 
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-form-clientes',
@@ -17,9 +18,9 @@ export class FormClientesComponent implements OnInit {
   selectedValue: String;
   errorNombre: boolean = false;
 
-  constructor(private clientesService: ClientesService, private db: DataFirebaseService) { }
+  constructor(private clientesService: ClientesService, private db: DataFirebaseService,public dialogRef: MatDialogRef<FormClientesComponent>) { }
 
-  onSubmit() {
+  crearCliente() {
     if (this.cliente.nombre == '') {
       this.errorNombre = true;
       setTimeout(() => {
@@ -33,6 +34,7 @@ export class FormClientesComponent implements OnInit {
     this.cliente.telefonos = this.cliente.telefonos.filter(function (e) { return e != "" })
     this.db.insertarClientes(this.cliente);
     this.clear();
+    this.dialogRef.close();
   }
   delCuenta() {
     this.cliente.cuentas.pop();

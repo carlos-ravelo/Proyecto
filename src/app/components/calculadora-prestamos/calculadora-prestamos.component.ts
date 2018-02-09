@@ -20,7 +20,8 @@ export class CalculadoraPrestamosComponent implements OnInit {
   constructor(private currencyPipe: CurrencyPipe,private clientesService: ClientesService, private db: DataFirebaseService) {
   }
   getOnservableCliente(): void {
-    this.clientesService.obtenerListaClientesObservable().subscribe(listaCliente => { this.listaCliente = listaCliente; });
+    this.clientesService.obtenerListaClientesObservable().subscribe(listaCliente => 
+      { this.listaCliente = listaCliente; });
   }
 
   clear() {
@@ -101,5 +102,7 @@ export class CalculadoraPrestamosComponent implements OnInit {
 
   
 }
+
+
 
 }

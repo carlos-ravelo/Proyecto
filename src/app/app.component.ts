@@ -3,40 +3,54 @@ import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CanActivateviaAuthGuardService } from './servicios/can-activatevia-auth-guard.service'
+import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
-
+declare var device;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'paymeLater';
   loading: boolean;
   logged: boolean;
   constructor(public afAuth: AngularFireAuth,
-    private router: Router  )   
-{
+    private router: Router, public canActivate: CanActivateviaAuthGuardService) {
 
   }
-
-
-  ngOnInit() {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-  /*   this.router.events.subscribe(()=>{
-      if (this.router.url!="/login") this.Checklogin();   */
-/* 
-    }) */
+  logOut(){
+    this.afAuth.auth.signOut();
   }
-  
-  Checklogin() {
-    if (this.afAuth.auth.currentUser) {
-      this.logged = true;
-    }
-    else
+  /* onActivate($event){
+    this.logged= true;
+    console.log($event.constructor.name)
+    if ($event.constructor.name=="LoginComponent"){
       this.logged = false;
-      this.router.navigate(['/login']);
+    }
+      else{
+        this.logged = true;     
+    }
+  } */
+  ngOnInit() {
+    this.logged = false;
+    this.afAuth.auth.onAuthStateChanged(((a: firebase.User) => {
+      if (a) {
+        this.logged = true;
+        this.router.navigateByUrl("/clientes")
+      }
+      else {
+        this.logged = false;
+        this.router.navigateByUrl("/login")
+      }
+    }));
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+      alert(device.platform);
+    }
+  }
+}
 
-  }}
+

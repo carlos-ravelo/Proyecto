@@ -1,7 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation,Inject } from '@angular/core';
 import { ClientesService } from '../../servicios/clientes.service';
 import { Prestamo, Movimiento } from '../../clases/cliente';
 import { DataFirebaseService } from '../../servicios/data-firebase.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { FormPrestamosComponent } from '../form-prestamos/form-prestamos.component';
+import { FormClientesComponent } from '../form-clientes/form-clientes.component';
+
 
 @Component({
   selector: 'app-lista-prestamos',
@@ -20,12 +24,25 @@ export class ListaPrestamosComponent implements OnInit {
   loading:boolean;
 
 
-  constructor(private db: DataFirebaseService, private clientesService: ClientesService) { }
+  constructor(private db: DataFirebaseService, private clientesService: ClientesService,public dialog: MatDialog) { }
+  
+  openDialog(): void {
+    let dialogRef = this.dialog.open(FormPrestamosComponent, {
+     
+       });
+       dialogRef.afterClosed().subscribe(result => {
+        console.log(`Dialog result: ${result}`); 
+        if (result == "abrirModalFormCliente"){
+          let dialogRefClientes = this.dialog.open(FormClientesComponent, {     
+          });
+        }
+      });
+      }
+  
   cambiarOpcionMenu(opcion: string) {
     this.opcionMenu = opcion;
   }
   onSelect(prestamo: Prestamo): void {
-
     this.prestamoActual = prestamo;
   }
   
@@ -33,34 +50,37 @@ export class ListaPrestamosComponent implements OnInit {
   ObtenerPrestamos(): void {
     this.loading = true;
     this.db.obtenerPrestamos().subscribe(listaPrestamos => {
-      if(listaPrestamos.length>0){/* this.opcionMenu = "Detalles"; */this.mostrarTodo= true}
+      console.log("hola")
+
+      if(listaPrestamos.length>0){this.mostrarTodo= true}
       this.listaPrestamos = listaPrestamos;
       if (!this.listaPrestamos[0]){
         this.mostrarTodo = false;
-      }
+      }else{    
       this.prestamoActual = this.listaPrestamos[0];
-      this.loading = false;
-      
+      } 
+      this.loading = false;      
      });
   }
 
 
   borrarPrestamo() {
-    if (this.listaPrestamos.length > 1) {
+    if (this.listaPrestamos.length > 0) {
       this.db.borrarPrestamo(this.prestamoActual);
+      this.db.borrarMovimientosPorPrestamo(this.prestamoActual);
       this.prestamoActual = this.listaPrestamos[0];
     }
     else {
       alert("No puede borrar todos los Prestamos");
     }
+
   }
   ngOnInit() {
     this.ObtenerPrestamos();
     this.mostrarTodo = true;
-
   }
 
-   myFunction() {
+  buscarPorNombre() {
     // Declare variables 
     var input, filter, table, tr, td, i;
     input = document.getElementById("myInput");

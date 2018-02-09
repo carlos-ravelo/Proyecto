@@ -13,6 +13,8 @@ import { CanActivateviaAuthGuardService } from './servicios/can-activatevia-auth
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'calculadora', component: CalculadoraPrestamosComponent,canActivate:[CanActivateviaAuthGuardService] },
   { path: 'clientes', component: ListaClientesComponent,canActivate:[CanActivateviaAuthGuardService] },
   { path: 'add-cliente', component: FormClientesComponent,canActivate:[CanActivateviaAuthGuardService] },
   { path: 'add-prestamo', component: FormPrestamosComponent,canActivate:[CanActivateviaAuthGuardService] },
@@ -20,8 +22,6 @@ const routes: Routes = [
   { path: 'add-movimiento', component: FormMovimientoComponent,canActivate:[CanActivateviaAuthGuardService] },
   { path: 'prestamos', component: ListaPrestamosComponent,canActivate:[CanActivateviaAuthGuardService] },
   { path: 'movimientos-por-prestamo', component: MovimientosPorPrestamoComponent,canActivate:[CanActivateviaAuthGuardService] },
-  { path: 'calculadora-prestamos', component: CalculadoraPrestamosComponent,canActivate:[CanActivateviaAuthGuardService] },
-  { path: 'login', component: LoginComponent }
 
 
 

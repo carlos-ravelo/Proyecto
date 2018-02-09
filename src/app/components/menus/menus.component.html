@@ -1,72 +1,23 @@
-<div id="wrapper">
+<ul class="nav" id="side-menu">
+  <li>
+    <a routerLink="/login">
+      <i class="fa fa-dashboard"></i> Dashboard</a>
+  </li>
+  <li>
+    <a routerLink="/login" (click)=" logOut()">
+      <i class="fa fa-sign-out" aria-hidden="true"></i> LogOut</a>
+  </li>
+  <li>
+    <a routerLink="/clientes" (click)="closeNav.emit('')">
+      <i class="fa fa-users" aria-hidden="true" ></i> Clientes
+      <span class="fa arrow"></span>
+    </a>
+    </li>
+  <li>
+    <a routerLink="/prestamos" (click)="closeNav.emit('')">
+      <i class="fa fa-university" aria-hidden="true"></i> Prestamos
+      <span class="fa arrow"></span>
+    </a>
+  </li>
 
-  <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">PayMeLater</a>
-    </div>
-
-    <div class="navbar-default sidebar" role="navigation">
-      <div class="sidebar-nav navbar-collapse">
-        <ul class="nav" id="side-menu">
-          <li class="sidebar-search">
-            <div class="input-group custom-search-form">
-              <input type="text" class="form-control" placeholder="Search...">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-            <!-- /input-group -->
-          </li>
-          <li>
-            <a routerLink="/login">
-              <i class="fa fa-dashboard"></i> Dashboard</a>
-          </li>
-          <li>
-              <a routerLink="/login" (click)=" logOut()">
-                <i class="fa fa-sign-out" aria-hidden="true"></i> LogOut</a>
-            </li>
-          <li>
-            <a routerLink="/clientes">
-              <i class="fa fa-users" aria-hidden="true"></i> Clientes
-              <span class="fa arrow"></span>
-            </a>
-            <ul class="nav nav-second-level">
-              <li>
-                <a routerLink="/clientes">Lista</a>
-              </li>
-              <li>
-                <a routerLink="/add-cliente">Agregar</a>
-              </li>
-            </ul>
-            <!-- /.nav-second-level -->
-          </li>
-          <li>
-            <a routerLink="/prestamos">
-              <i class="fa fa-university" aria-hidden="true"></i> Prestamos
-              <span class="fa arrow"></span>
-            </a>
-            <ul class="nav nav-second-level">
-              <li>
-                <a routerLink="/prestamos">Lista</a>
-              </li>
-              <li>
-                <a routerLink="/add-prestamo">Agregar</a>
-              </li>
-            </ul>
-          </li>
-
-        </ul>
-      </div>
-      <!-- /.sidebar-collapse -->
-    </div>
-    <!-- /.navbar-static-side -->
-  </nav>
-</div>
+</ul>

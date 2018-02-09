@@ -1,52 +1,111 @@
-<h2>Agregar Cliente a la Base de datos</h2>
-
-<div class="col-sm-6">
+<h1 mat-dialog-title>Agregar Cliente </h1>
+<!-- <mat-dialog-content>
   <div class="form-group">
     <label>Nombre</label>
     <input type="text" placeholder="Nombre" class="form-control" id="cuenta" name="nombre" required [(ngModel)]="cliente.nombre"
       required>
-      <div class="alert alert-danger" *ngIf="errorNombre">
-          <strong>error!</strong> El nombre de cliente no puede ir vacio !
-        </div>
-  </div>
-  <div>
-    <div class="form-group">
-      <label>Cuentas</label>
-      <button (click)="addCuenta()" class="fa fa-plus-square-o btn btn-link" aria-hidden="true"> ADD</button>
-      <button (click)="delCuenta()" class="fa fa-minus-square-o btn btn-link" aria-hidden="true" *ngIf="cliente.cuentas.length>0">
-        DEL</button>
+    <div class="alert alert-danger" *ngIf="errorNombre">
+      <strong>error!</strong> El nombre de cliente no puede ir vacio !
     </div>
-
-    <div class="form-group"  *ngFor="let cuenta of cliente.cuentas;index as i;trackBy:identify ">
-      <label>Banco: </label>
-      <select name="listaBancos"   id="disabledSelect" class="form-control invalid" [(ngModel)]="cliente.cuentas[i].banco">
-        <option value="default" >Seleccione</option>
-        <option *ngFor="let banco of listaBancos">{{banco}}</option>
-      </select>
-      <label>Numero:</label>
-      <input type="number" [required]="true" class="form-control" id="numero" placeholder="Cuenta No." name="numero" [(ngModel)]="cuenta.numero">
-    </div>
-
-    <div class="form-group">
-      <label>Telefonos</label>
-      <button (click)="addTelefono()" class="fa fa-plus-square-o btn btn-link"> ADD</button>
-      <button (click)="delTelefono()" class="fa fa-minus-square-o btn btn-link" aria-hidden="true" *ngIf="cliente.telefonos.length>0">DEL</button>
-      <div class="form-group" *ngFor="let telefono of cliente.telefonos; index as i; trackBy:identify">
-        <input required type="number" class="form-control" id="telefono" placeholder="Telefono" name="telefono" [(ngModel)]="cliente.telefonos[i]">
-      </div>
-    </div>
-    <div class="form-group">
-        <label>Notas</label>
-        <div class="form-group" >
-          <textarea [(ngModel)]="cliente.notas" class="form-control" name="notas" id="notas" cols="1" rows="5"></textarea>
-        </div>
-      </div>
-
-    <button type="submit" class="btn btn-success" (click)="onSubmit()">Submit</button>
-
-
-    <div></div>
   </div>
 
+  <div class="form-group">
+    <label>Cuentas</label>
+    <button (click)="addCuenta()" class="fa fa-plus-square-o btn btn-link" aria-hidden="true"> ADD</button>
+    <button (click)="delCuenta()" class="fa fa-minus-square-o btn btn-link" aria-hidden="true" *ngIf="cliente.cuentas.length>0">
+      DEL</button>
+  </div>
 
- 
+  <div class="form-group" *ngFor="let cuenta of cliente.cuentas;index as i;trackBy:identify ">
+    <label>Banco: </label>
+    <select name="listaBancos" id="disabledSelect" class="form-control invalid" [(ngModel)]="cliente.cuentas[i].banco">
+      <option value="default">Seleccione</option>
+      <option *ngFor="let banco of listaBancos">{{banco}}</option>
+    </select>
+    <label>Numero:</label>
+    <input type="number" [required]="true" class="form-control" id="numero" placeholder="Cuenta No." name="numero" [(ngModel)]="cuenta.numero">
+  </div>
+
+  <div class="form-group">
+    <label>Telefonos</label>
+    <button (click)="addTelefono()" class="fa fa-plus-square-o btn btn-link"> ADD</button>
+    <button (click)="delTelefono()" class="fa fa-minus-square-o btn btn-link" aria-hidden="true" *ngIf="cliente.telefonos.length>0">DEL</button>
+    <div class="form-group" *ngFor="let telefono of cliente.telefonos; index as i; trackBy:identify">
+      <input required type="number" class="form-control" id="telefono" placeholder="Telefono" name="telefono" [(ngModel)]="cliente.telefonos[i]">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label>Notas</label>
+    <div class="form-group">
+      <textarea [(ngModel)]="cliente.notas" class="form-control" name="notas" id="notas" cols="1" rows="5"></textarea>
+    </div>
+  </div>
+
+</mat-dialog-content>
+ -->
+
+
+<mat-dialog-content>
+
+  <mat-form-field>
+    <input matInput type="text" placeholder="Nombre" id="nombre" name="nombre" [(ngModel)]="cliente.nombre">
+  </mat-form-field>
+  <div class="alert alert-danger" *ngIf="errorNombre">
+    <strong>error!</strong> El nombre de cliente no puede ir vacio !
+  </div>
+
+
+  <div class="form-group">
+    <label>Cuentas</label><br>
+    <button mat-button (click)="addCuenta()" > Agregar
+       <i class="fa fa-plus-square-o"></i>
+    </button>
+    <button mat-button (click)="delCuenta()" *ngIf="cliente.cuentas.length>0">
+      Borrar <i class="fa fa-minus-square-o"></i>
+    </button>
+  </div>
+
+  <div class="form-group" *ngFor="let cuenta of cliente.cuentas;index as i;trackBy:identify ">
+    <mat-form-field>
+      <mat-select [(ngModel)]="cliente.cuentas[i].banco" placeholder="Seleccione el banco">
+        <mat-option [value]="banco" *ngFor="let banco of listaBancos">{{banco}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="number" id="numero" placeholder="Cuenta No." name="numero" [(ngModel)]="cuenta.numero">
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <label>Telefonos</label><br>
+    <button mat-button (click)="addTelefono()"> Agregar
+        <i class="fa fa-plus-square-o"></i>
+    </button>
+    <button mat-button (click)="delTelefono()"  *ngIf="cliente.telefonos.length>0">Borrar
+        <i class="fa fa-minus-square-o"></i>
+    </button>
+    <div class="form-group" *ngFor="let telefono of cliente.telefonos; index as i; trackBy:identify">
+      <mat-form-field>
+        <input matInput  type="number" id="telefono" placeholder="Telefono" name="telefono" [(ngModel)]="cliente.telefonos[i]">
+      </mat-form-field>
+    </div>
+  </div>
+
+
+
+  <div class="form-group">
+    <label>Notas</label>
+    <div class="form-group">
+      <textarea [(ngModel)]="cliente.notas" class="form-control" name="notas" id="notas" cols="1" rows="5"></textarea>
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+
+
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button (click)="crearCliente()" mat-button>Crear</button>
+</mat-dialog-actions>

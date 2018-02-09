@@ -75,7 +75,7 @@ export class DataFirebaseService {
   }
   //Obtiene el movimiento inicial de un prestamo
   obtenerMovimientoInicial(prestamo: Prestamo) {
-    console.log("Obteniendo movimiento inicial",prestamo)
+    console.log("Obteniendo movimiento inicial", prestamo)
     return this.db.collection('movimientos', ref => ref.where('numeroPrestamo', '==', prestamo.numeroPrestamo)
       .where('tipoMovimiento', '==', 'inicial'))
       .snapshotChanges()
@@ -123,12 +123,12 @@ export class DataFirebaseService {
   //Inserte un cliente nuevo
   insertarClientes(cliente: Cliente) {
     this.clientesCollection.add(cliente);
-    console.log("se inserto un cliente",cliente);
+    console.log("se inserto un cliente", cliente);
   }
   //Inserte un Prestamo nuevo
   insertarPrestamos(prestamo: Prestamo) {
     this.prestamosCollection.doc(prestamo.numeroPrestamo).set(prestamo)
-    console.log("se inserto un prestamo",prestamo);
+    console.log("se inserto un prestamo", prestamo);
   }
 
   //Inserta un Movimiento nuevo
@@ -159,12 +159,21 @@ export class DataFirebaseService {
     console.log("se borro un prestamo");
   }
 
-    //Borra un movimiento
-    borrarMovimiento(id: string) {
-      this.clienteDoc = this.db.doc(`/movimientos/${id}`);
-      this.clienteDoc.delete();
-      console.log("se borro un movimiento");
-    }
+  //Borra un movimiento
+  borrarMovimiento(id: string) {
+    this.clienteDoc = this.db.doc(`/movimientos/${id}`);
+    this.clienteDoc.delete();
+    console.log("se borro un movimiento");
+  }
+  borrarMovimientosPorPrestamo(prestamo: Prestamo) {
+    var subscripcion = this.obtenerMovimientosPorPrestamo(prestamo.numeroPrestamo).subscribe((listaMovimientos) => {
+      listaMovimientos.forEach(element => {
+        this.borrarMovimiento(element.id);
+        subscripcion.unsubscribe();
+      });
+
+    })
+  }
 
   //Modifica un cliente 
   modificarCliente(cliente: any) {
@@ -187,5 +196,5 @@ export class DataFirebaseService {
   }
 
 
- 
+
 }
