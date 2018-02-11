@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation,Inject } from '@angular/core';
 import { ClientesService } from '../../servicios/clientes.service';
 import { Prestamo, Movimiento } from '../../clases/cliente';
 import { DataFirebaseService } from '../../servicios/data-firebase.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatSnackBar} from '@angular/material';
 import { FormPrestamosComponent } from '../form-prestamos/form-prestamos.component';
 import { FormClientesComponent } from '../form-clientes/form-clientes.component';
 
@@ -24,7 +24,8 @@ export class ListaPrestamosComponent implements OnInit {
   loading:boolean;
 
 
-  constructor(private db: DataFirebaseService, private clientesService: ClientesService,public dialog: MatDialog) { }
+  constructor(private db: DataFirebaseService, private clientesService: ClientesService,public dialog: MatDialog,
+    public snackBar: MatSnackBar,    ) { }
   
   openDialog(): void {
     let dialogRef = this.dialog.open(FormPrestamosComponent, {
@@ -36,6 +37,15 @@ export class ListaPrestamosComponent implements OnInit {
           let dialogRefClientes = this.dialog.open(FormClientesComponent, {     
           });
         }
+        else if(result == "prestamoCreado"){
+
+         let snackBarRef = this.snackBar.open("Se ha creado el prestamo","",{duration:5000,}).onAction()
+          .subscribe(()=>{
+            console.log('The snack-bar action was triggered!');
+            snackBarRef.unsubscribe();
+          })
+          
+        }
       });
       }
   
@@ -46,12 +56,14 @@ export class ListaPrestamosComponent implements OnInit {
     this.prestamoActual = prestamo;
   }
   
+  cambiarPrestamoActual(numeroPrestamo:string){
+    alert(numeroPrestamo)
+ this.prestamoActual = this.listaPrestamos.find(prestamo=>prestamo.numeroPrestamo==numeroPrestamo);
+  }
 
   ObtenerPrestamos(): void {
     this.loading = true;
     this.db.obtenerPrestamos().subscribe(listaPrestamos => {
-      console.log("hola")
-
       if(listaPrestamos.length>0){this.mostrarTodo= true}
       this.listaPrestamos = listaPrestamos;
       if (!this.listaPrestamos[0]){

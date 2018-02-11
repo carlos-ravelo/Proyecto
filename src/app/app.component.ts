@@ -24,16 +24,6 @@ export class AppComponent implements OnInit {
   logOut(){
     this.afAuth.auth.signOut();
   }
-  /* onActivate($event){
-    this.logged= true;
-    console.log($event.constructor.name)
-    if ($event.constructor.name=="LoginComponent"){
-      this.logged = false;
-    }
-      else{
-        this.logged = true;     
-    }
-  } */
   ngOnInit() {
     this.logged = false;
     this.afAuth.auth.onAuthStateChanged(((a: firebase.User) => {

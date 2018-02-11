@@ -1,77 +1,76 @@
-<br>
-<div class="col-sm-8">
-
-  <mat-card>
-    <mat-card-title>
-      Lista de Prestamos
-    </mat-card-title>
-    <mat-card-content>
-      <button  mat-raised-button (click)="openDialog()">Agregar 
-          <i class="fa fa-plus-square-o"></i>
-      </button>
-      <button mat-raised-button (click)="borrarPrestamo()">Borrar 
-          <i class="fa fa-minus-square-o"></i>
-
-      </button>
-      <div class="form-group">
-        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-        />
-      </div>
-      <div class="alert alert-danger" *ngIf="!mostrarTodo">
-        <strong>Nota:</strong> No tiene Prestamos Para visualizar, inicie haciendo click en "Agregar nuevo prestamo"
-      </div>
-      <input  *ngIf="mostrarTodo" class="input-sm" type="text" id="myInput" (keyup)="buscarPorNombre()" placeholder="Buscar por nombre..">
-      <div style="overflow-x:auto;">
-        <table id="myTable" class="table table-hover condensed" *ngIf="mostrarTodo">
-          <thead>
-            <tr>
-              <th>Prestamo</th>
-              <th>Cliente</th>
-              <th>Capital pendiente</th>
-              <th>Prox. Interes</th>
-              <th>Prox. Capital</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let prestamo of listaPrestamos" (click)="onSelect(prestamo)" [ngClass]="{'active':prestamo==prestamoActual}">
-              <td>{{prestamo.numeroPrestamo}}</td>
-              <td>{{prestamo.cliente}}</td>
-              <td>{{prestamo.capitalPendiente| currency}}</td>
-              <td>{{prestamo.capitalPendiente*prestamo.tasa/100/12| currency}}</td>
-              <td>{{(prestamo.montoCuotas-(prestamo.capitalPrestado*prestamo.tasa/100/12)| currency)}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </mat-card-content>
-  </mat-card>
-  <br>
-  <div *ngIf="mostrarTodo">
-    <div *ngIf="prestamoActual">
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Detalles
-          </mat-panel-title>
-          <mat-panel-description>
-            Ver detalles de prestamo
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <app-detalle-prestamo [prestamo]=prestamoActual></app-detalle-prestamo>
-      </mat-expansion-panel>
-      <br>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Movimientos
-          </mat-panel-title>
-          <mat-panel-description>
-            Administrar Movimientos
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <app-movimientos-por-prestamo [prestamo]=prestamoActual></app-movimientos-por-prestamo>
-      </mat-expansion-panel>
-      <br>
+<mat-card>
+  <mat-card-title>
+    Lista de Prestamos
+  </mat-card-title>
+  <mat-card-content>
+    <div class="form-group">
+      <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+      />
     </div>
+
+    <mat-card-actions *ngIf="!loading">
+      <button  mat-button (click)="openDialog()">Agregar
+        <i class="fa fa-plus-square-o"></i>
+      </button>
+      <button *ngIf="mostrarTodo" mat-button (click)="borrarPrestamo()">Borrar
+        <i class="fa fa-minus-square-o"></i>
+      </button>
+    </mat-card-actions>
+
+    <div class="alert alert-danger" *ngIf="!mostrarTodo">
+      <strong>Nota:</strong> No tiene Prestamos Para visualizar, inicie haciendo click en "Agregar nuevo prestamo"
+    </div>
+    <input *ngIf="mostrarTodo" class="input-sm" type="text" id="myInput" (keyup)="buscarPorNombre()" placeholder="Buscar por nombre..">
+    <div style="overflow-x:auto;">
+      <table id="myTable" class="table table-hover condensed" *ngIf="mostrarTodo">
+        <thead>
+          <tr>
+            <th>Prestamo</th>
+            <th>Cliente</th>
+            <th>Capital pendiente</th>
+            <th>Prox. Interes</th>
+            <th>Prox. Capital</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let prestamo of listaPrestamos" (click)="onSelect(prestamo)" [ngClass]="{'active':prestamo==prestamoActual}">
+            <td>{{prestamo.numeroPrestamo}}</td>
+            <td>{{prestamo.cliente}}</td>
+            <td>{{prestamo.capitalPendiente| currency}}</td>
+            <td>{{prestamo.capitalPendiente*prestamo.tasa/100/12| currency}}</td>
+            <td>{{(prestamo.montoCuotas-(prestamo.capitalPrestado*prestamo.tasa/100/12)| currency)}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>
+<br>
+<div *ngIf="mostrarTodo">
+  <div *ngIf="prestamoActual">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Detalles
+        </mat-panel-title>
+        <mat-panel-description>
+          Ver detalles de prestamo
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-detalle-prestamo (prestamoActual)="cambiarPrestamoActual($event)" [prestamo]=prestamoActual></app-detalle-prestamo>
+    </mat-expansion-panel>
+    <br>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Movimientos
+        </mat-panel-title>
+        <mat-panel-description>
+          Administrar Movimientos
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-movimientos-por-prestamo [prestamo]=prestamoActual></app-movimientos-por-prestamo>
+    </mat-expansion-panel>
+    <br>
   </div>
 </div>

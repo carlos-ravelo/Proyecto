@@ -34,7 +34,7 @@ export class FormClientesComponent implements OnInit {
     this.cliente.telefonos = this.cliente.telefonos.filter(function (e) { return e != "" })
     this.db.insertarClientes(this.cliente);
     this.clear();
-    this.dialogRef.close();
+    this.dialogRef.close("clienteCreado");
   }
   delCuenta() {
     this.cliente.cuentas.pop();

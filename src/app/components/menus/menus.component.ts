@@ -13,6 +13,7 @@ export class MenusComponent implements OnInit {
 @Output()closeNav = new EventEmitter();
   constructor(public afAuth: AngularFireAuth) { }
   logOut(){
+    this.closeNav.emit('');
     this.afAuth.auth.signOut();
     
   }

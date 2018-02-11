@@ -69,7 +69,7 @@ export class ClientesService {
 
   deleteCliente(cliente: Cliente): Observable<Cliente> {
 
-    const id: number = cliente.id;
+    const id: string = cliente.id;
     const url = `${this.clientesUrl}${id}`;
     return this.http.delete<Cliente>(url, httpOptions)
   }

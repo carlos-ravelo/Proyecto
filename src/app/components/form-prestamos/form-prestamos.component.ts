@@ -118,7 +118,7 @@ export class FormPrestamosComponent implements OnInit {
     this.db.insertarPrestamos(this.prestamo);
     this.insertarMovimiento();
     this.clear();
-    this.dialogRef.close();
+    this.dialogRef.close("prestamoCreado");
 
 
   }

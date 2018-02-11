@@ -2,9 +2,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Cliente } from '../../clases/cliente';
 import { DataFirebaseService } from '../../servicios/data-firebase.service'
 import { Observable } from 'rxjs/Observable';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar,MatTable,MatTableDataSource } from '@angular/material';
 import { FormClientesComponent } from '../form-clientes/form-clientes.component';
-
 
 
 @Component({
@@ -16,10 +15,9 @@ import { FormClientesComponent } from '../form-clientes/form-clientes.component'
 export class ListaClientesComponent implements OnInit {
   listaCliente: Cliente[];
   clienteActual: Cliente;
-  loading:boolean;
+  loading: boolean;
 
-
-  constructor(private db: DataFirebaseService,public dialog: MatDialog) {
+  constructor(private db: DataFirebaseService, public dialog: MatDialog, public snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -27,7 +25,15 @@ export class ListaClientesComponent implements OnInit {
 
   }
   openClienteModal(): void {
-    let dialogRef = this.dialog.open(FormClientesComponent, {       });}
+
+    let dialogRef = this.dialog.open(FormClientesComponent, {});
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data == "clienteCreado") {
+        this.snackBar.open("Se  creo el cliente", "", { duration: 4000 })
+      }
+
+    })
+  }
 
   onSelect(cliente: Cliente): void {
     this.clienteActual = cliente;
@@ -37,11 +43,11 @@ export class ListaClientesComponent implements OnInit {
     this.loading = true;
     this.db.obtenerClientes().subscribe(listaCliente => {
       const clienteActualBackUp = this.clienteActual; this.listaCliente = listaCliente;
-      if (!this.clienteActual) {
+            if (!this.clienteActual) {
         this.clienteActual = this.listaCliente[0]
       }
       else {
-        this.clienteActual = this.listaCliente.find(o => o.id === clienteActualBackUp.id);
+        this.clienteActual = this.listaCliente.find(cliente => cliente.id === clienteActualBackUp.id);
       }
       this.loading = false;
 
@@ -59,4 +65,4 @@ export class ListaClientesComponent implements OnInit {
   }
 
 }
-
+ 

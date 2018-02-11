@@ -56,13 +56,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatMenuModule} from '@angular/material/menu';
 import { ModificarMovimientoComponent } from './components/modificar-movimiento/modificar-movimiento.component';
-
-
-
-
-
-
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTableModule} from '@angular/material/table';
 
 
 @NgModule({
@@ -111,7 +106,10 @@ import { ModificarMovimientoComponent } from './components/modificar-movimiento/
     MatDialogModule,
     MatSelectModule,
     MatGridListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSnackBarModule,
+    MatTableModule,
+    
   ],
   providers: [ClientesService,AngularFireModule,DataFirebaseService,CurrencyPipe,DatePipe,AngularFireAuth,
     CanActivateviaAuthGuardService,],

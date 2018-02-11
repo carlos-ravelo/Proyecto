@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input,OnChanges, SimpleChange  } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input,OnChanges, SimpleChange,Output,EventEmitter  } from '@angular/core';
 import { Prestamo, Movimiento } from '../../clases/cliente';
 import { ClientesService } from '../../servicios/clientes.service';
 import { DataFirebaseService } from '../../servicios/data-firebase.service'
@@ -13,7 +13,7 @@ import {Cliente} from '../../clases/cliente'
 })
 export class DetallePrestamoComponent implements OnInit {
 
-
+  @Output() prestamoActual = new EventEmitter() ;
   @Input() prestamo: Prestamo;
 
   editMode: boolean = false;
@@ -62,6 +62,7 @@ export class DetallePrestamoComponent implements OnInit {
       this.prestamo.capitalPendiente = valoresCalculados.capitalPendiente;
       this.db.modificarPrestamo(this.prestamo);
       subscripcion.unsubscribe();
+      this.prestamoActual.emit(this.prestamo.numeroPrestamo);
 
     })
 

@@ -1,32 +1,37 @@
-<mat-toolbar class="toolbar" >
-    <button (click)="sidenav.toggle()" class="hamburger mat-button" mat-button="" title="Docs menu" *ngIf="logged">
-      <span class="mat-button-wrapper">
-        <mat-icon class="mat-icon" role="img" svgicon="menu" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" focusable="false" viewBox="0 0 24 24">
-            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
-          </svg>
-        </mat-icon>
-      </span>
-      <div class="mat-button-ripple mat-ripple" matripple=""></div>
-      <div class="mat-button-focus-overlay"></div>
-    </button>
-    <a routerLink="/clientes">
-      <i class="material-icons">home</i>
-    </a>
-    <p>payMeLater</p>
-    <span class="fill-remaining-space"></span>
 
-    <a routerLink="/login" (click)=" logOut()"><i class="fa fa-sign-out" aria-hidden="true"></i> LogOut</a>
-  </mat-toolbar>
+
+<mat-toolbar class="toolbar" >
+  <button (click)="sidenav.toggle()" class="hamburger mat-button" mat-button="" title="Docs menu" *ngIf="logged">
+    <span class="mat-button-wrapper">
+      <mat-icon class="mat-icon" role="img" svgicon="menu" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" focusable="false" viewBox="0 0 24 24">
+          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+        </svg>
+      </mat-icon>
+    </span>
+    <div class="mat-button-ripple mat-ripple" matripple=""></div>
+    <div class="mat-button-focus-overlay"></div>
+  </button>
+  <a routerLink="/clientes">
+    <i class="material-icons">home</i>
+  </a>
+  <p>payMeLater</p>
+  <span class="fill-remaining-space"></span>
+  <a href="#" routerLink="/login" (click)=" logOut()">
+    <i class="fa fa-sign-out" aria-hidden="true"></i> LogOut</a>
+</mat-toolbar>
 <mat-sidenav-container class="example-contdep ainer">
-  <mat-sidenav #sidenav mode="over">
-    <br><br><br>
+  <mat-sidenav fixedInViewport="true"  #sidenav mode="over">
+    <br>
+    <br>
+    <br>
     <app-menus (closeNav)="sidenav.close()">
     </app-menus>
   </mat-sidenav>
   <mat-sidenav-content>
     <div>
-      <br><br>
+      <br>
+      <br>
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
