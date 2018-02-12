@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewEncapsulation,Inject } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 import { ClientesService } from '../../servicios/clientes.service';
 import { Prestamo, Movimiento } from '../../clases/cliente';
 import { DataFirebaseService } from '../../servicios/data-firebase.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatSnackBar} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { FormPrestamosComponent } from '../form-prestamos/form-prestamos.component';
 import { FormClientesComponent } from '../form-clientes/form-clientes.component';
 
@@ -20,59 +20,58 @@ export class ListaPrestamosComponent implements OnInit {
   opcionMenu: string;
   prestamosFiltrados: Prestamo[];
   currentCapitalPagado;
-  mostrarTodo:boolean;
-  loading:boolean;
+  mostrarTodo: boolean;
+  loading: boolean;
 
 
-  constructor(private db: DataFirebaseService, private clientesService: ClientesService,public dialog: MatDialog,
-    public snackBar: MatSnackBar,    ) { }
-  
+  constructor(private db: DataFirebaseService, private clientesService: ClientesService, public dialog: MatDialog,
+    public snackBar: MatSnackBar, ) { }
+
   openDialog(): void {
     let dialogRef = this.dialog.open(FormPrestamosComponent, {
-     
-       });
-       dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`); 
-        if (result == "abrirModalFormCliente"){
-          let dialogRefClientes = this.dialog.open(FormClientesComponent, {     
-          });
-        }
-        else if(result == "prestamoCreado"){
 
-         let snackBarRef = this.snackBar.open("Se ha creado el prestamo","",{duration:5000,}).onAction()
-          .subscribe(()=>{
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      if (result == "abrirModalFormCliente") {
+        let dialogRefClientes = this.dialog.open(FormClientesComponent, {
+        });
+      }
+      else if (result == "prestamoCreado") {
+
+        let snackBarRef = this.snackBar.open("Se ha creado el prestamo", "", { duration: 5000, }).onAction()
+          .subscribe(() => {
             console.log('The snack-bar action was triggered!');
             snackBarRef.unsubscribe();
           })
-          
-        }
-      });
+
       }
-  
+    });
+  }
+
   cambiarOpcionMenu(opcion: string) {
     this.opcionMenu = opcion;
   }
   onSelect(prestamo: Prestamo): void {
     this.prestamoActual = prestamo;
   }
-  
-  cambiarPrestamoActual(numeroPrestamo:string){
-    alert(numeroPrestamo)
- this.prestamoActual = this.listaPrestamos.find(prestamo=>prestamo.numeroPrestamo==numeroPrestamo);
+
+  cambiarPrestamoActual(numeroPrestamo: string) {
+    this.prestamoActual = this.listaPrestamos.find(prestamo => prestamo.numeroPrestamo == numeroPrestamo);
   }
 
   ObtenerPrestamos(): void {
     this.loading = true;
     this.db.obtenerPrestamos().subscribe(listaPrestamos => {
-      if(listaPrestamos.length>0){this.mostrarTodo= true}
+      if (listaPrestamos.length > 0) { this.mostrarTodo = true }
       this.listaPrestamos = listaPrestamos;
-      if (!this.listaPrestamos[0]){
+      if (!this.listaPrestamos[0]) {
         this.mostrarTodo = false;
-      }else{    
-      this.prestamoActual = this.listaPrestamos[0];
-      } 
-      this.loading = false;      
-     });
+      } else {
+        this.prestamoActual = this.listaPrestamos[0];
+      }
+      this.loading = false;
+    });
   }
 
 
@@ -99,7 +98,7 @@ export class ListaPrestamosComponent implements OnInit {
     filter = input.value.toUpperCase();
     table = document.getElementById("myTable");
     tr = table.getElementsByTagName("tr");
-  
+
     // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
       td = tr[i].getElementsByTagName("td")[1];
@@ -109,9 +108,9 @@ export class ListaPrestamosComponent implements OnInit {
         } else {
           tr[i].style.display = "none";
         }
-      } 
+      }
     }
   }
 
- 
+
 }

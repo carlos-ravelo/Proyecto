@@ -9,7 +9,7 @@
     </div>
 
     <mat-card-actions *ngIf="!loading">
-      <button  mat-button (click)="openDialog()">Agregar
+      <button mat-button (click)="openDialog()">Agregar
         <i class="fa fa-plus-square-o"></i>
       </button>
       <button *ngIf="mostrarTodo" mat-button (click)="borrarPrestamo()">Borrar
@@ -72,5 +72,16 @@
       <app-movimientos-por-prestamo [prestamo]=prestamoActual></app-movimientos-por-prestamo>
     </mat-expansion-panel>
     <br>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Amortizacion
+        </mat-panel-title>
+        <mat-panel-description>
+          Administrar Amortizacion
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-amortizacion [prestamo]=prestamoActual></app-amortizacion>
+    </mat-expansion-panel>
   </div>
 </div>

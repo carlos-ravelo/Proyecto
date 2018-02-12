@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, ViewChild,Inject } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, ViewChild, Inject } from '@angular/core';
 import { Prestamo, Movimiento } from '../../clases/cliente';
 import { DataFirebaseService } from '../../servicios/data-firebase.service';
-import {MAT_DIALOG_DATA,MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 declare var $: any;
 declare var jQuery: any;
@@ -21,7 +21,7 @@ export class FormMovimientoComponent implements OnInit {
   errorMontoPrestado: boolean
   errorInteresOCapital: boolean;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private db: DataFirebaseService,public dialogRef: MatDialogRef<FormMovimientoComponent>) { }
+  constructor( @Inject(MAT_DIALOG_DATA) public data: any, private db: DataFirebaseService, public dialogRef: MatDialogRef<FormMovimientoComponent>) { }
 
   clear() {
     this.movimiento = {
@@ -36,15 +36,18 @@ export class FormMovimientoComponent implements OnInit {
       montoPrestado: 0
 
     }
-    if (this.movimiento.tipoMovimiento == 'pago') { this.movimiento.interesDelPago = this.prestamo.capitalPendiente * this.prestamo.tasa / 100 / 12 }
+    if (this.movimiento.tipoMovimiento == 'pago') {
+      this.movimiento.interesDelPago = this.prestamo.capitalPendiente * this.prestamo.tasa / 100 / 12
+      this.movimiento.capitalDelPago = this.prestamo.montoCuotas - this.movimiento.interesDelPago;
+    }
   }
 
-  cambioTipoMovimiento(){
+  cambioTipoMovimiento() {
     if (this.movimiento.tipoMovimiento == 'pago') { this.movimiento.interesDelPago = this.prestamo.capitalPendiente * this.prestamo.tasa / 100 / 12 }
   }
 
   ngOnInit() {
-    
+
     this.prestamo = this.data.prestamo;
     this.clear();
 
@@ -65,9 +68,9 @@ export class FormMovimientoComponent implements OnInit {
         this.errorMontoPrestado = false;
       }, 2000)
       return
-    }    
-    if(this.tipoMovimiento=='desembolso'){this.movimiento.capitalDelPago= 0; this.movimiento.interesDelPago=0}
-    else if(this.tipoMovimiento=='pago'){this.movimiento.montoPrestado = 0}
+    }
+    if (this.tipoMovimiento == 'desembolso') { this.movimiento.capitalDelPago = 0; this.movimiento.interesDelPago = 0 }
+    else if (this.tipoMovimiento == 'pago') { this.movimiento.montoPrestado = 0 }
     this.db.insertarMovimiento(this.movimiento);
     var subscripcion = this.db.obtenerMovimientosPorPrestamo(this.prestamo.numeroPrestamo).subscribe((listaMovimientos) => {
       var valoresCalculados = this.db.calcularValoresPrestamo(listaMovimientos, this.prestamo);

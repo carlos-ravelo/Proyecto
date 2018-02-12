@@ -1,5 +1,5 @@
 <div class="form-inline">
-  <button mat-button (click)="openModificarMovimiento()">Modificar movimiento
+  <button mat-button (click)="openModificarMovimiento()">Modificar
     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
   </button>
   <button mat-button (click)='borrarMovimiento()'>
@@ -15,25 +15,61 @@
     Opciones
   </button>
 </div>
-<div style="overflow-x:auto;">
-  <table class="table table-hover condensed">
-    <thead>
-      <tr>
-        <th>Tipo Mov.</th>
-        <th>FechaTran</th>
-        <th>InteresDelPago</th>
-        <th>CapitalDelPago</th>
-        <th>Monto Prestado</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let movimiento of listaMovimientos" (click)="onSelect(movimiento)" [ngClass]="{'active':movimiento==movimientoActual}">
-        <td>{{movimiento.tipoMovimiento}}</td>
-        <td>{{movimiento.fechaTransaccion|date}}</td>
-        <td>{{movimiento.interesDelPago| currency}}</td>
-        <td>{{movimiento.capitalDelPago| currency}}</td>
-        <td>{{movimiento.montoPrestado| currency}}</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="mat-elevation-z20">
+
+  <div style="overflow-x:auto;">
+    <table class="table table-hover condensed">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Fecha</th>
+          <th>Interes</th>
+          <th>Capital</th>
+          <th>Prestado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let movimiento of listaMovimientos" (click)="onSelect(movimiento)" [ngClass]="{'active':movimiento==movimientoActual}">
+          <td>{{movimiento.tipoMovimiento}}</td>
+          <td>{{movimiento.fechaTransaccion|date}}</td>
+          <td>{{movimiento.interesDelPago| currency}}</td>
+          <td>{{movimiento.capitalDelPago| currency}}</td>
+          <td>{{movimiento.montoPrestado| currency}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br>
+<br>
+<br>
+<div class="example-container mat-elevation-z20">
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="tipoMovimiento">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo </mat-header-cell>
+      <mat-cell *matCellDef="let movimiento"> {{movimiento.tipoMovimiento}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="fechaTrasaccion">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha </mat-header-cell>
+      <mat-cell *matCellDef="let movimiento"> {{movimiento.fechaTransaccion|date}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="interesDelPago">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Interes </mat-header-cell>
+      <mat-cell *matCellDef="let movimiento"> {{movimiento.interesDelPago|currency}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="capitalDelPago">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Capital </mat-header-cell>
+      <mat-cell *matCellDef="let movimiento"> {{movimiento.capitalDelPago|currency}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="montoPrestado">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Prestado </mat-header-cell>
+      <mat-cell *matCellDef="let movimiento"> {{movimiento.montoPrestado|currency}} </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row (click)="onSelect(movimiento)" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]">
+  </mat-paginator>
+
 </div>

@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     private router: Router, public canActivate: CanActivateviaAuthGuardService) {
 
   }
-  logOut(){
+  logOut() {
     this.afAuth.auth.signOut();
   }
   ngOnInit() {
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     this.afAuth.auth.onAuthStateChanged(((a: firebase.User) => {
       if (a) {
         this.logged = true;
-        this.router.navigateByUrl("/clientes")
+        this.router.navigateByUrl("/prestamos")
       }
       else {
         this.logged = false;
