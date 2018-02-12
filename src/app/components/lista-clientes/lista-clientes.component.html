@@ -1,0 +1,33 @@
+<mat-card>
+  <mat-card-title>
+    Lista de Clientes
+  </mat-card-title>
+
+  <mat-card-actions>
+    <button color="primary" mat-button (click)="openClienteModal()">Agregar cliente
+      <i class="fa fa-plus-square-o"></i>
+
+    </button>
+    <button color="primary" mat-button (click)="borrarCliente()">Borrar cliente
+      <i class="fa fa-minus-square-o"></i>
+    </button>
+  </mat-card-actions>
+
+  <mat-card-content>
+    <div class="form-group">
+      <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+      />
+    </div>
+    <div *ngFor="let cliente of listaCliente">
+      <button href="#" (click)="onSelect(cliente)" data-toggle="collapse" data-target="#userdetail" [ngClass]="{'list-group-item': true,'active':cliente==clienteActual}">
+        {{cliente.nombre}}
+      </button>
+      <div id="userdetail" *ngIf='clienteActual==cliente' id="userdetail" class="collapse">
+        <app-detalle-cliente [cliente]="clienteActual"></app-detalle-cliente>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+
