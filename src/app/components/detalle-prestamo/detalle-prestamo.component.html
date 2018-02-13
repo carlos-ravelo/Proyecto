@@ -160,61 +160,32 @@
   </div>
 
   <!--  Editar Prestamo -->
-  <div *ngIf="editMode ">
-    <div class="form-horizontal ">
-      <div class="form-group ">
-        <label class="control-label col-sm-2 " for="cliente ">ID:</label>
-        <div class="col-sm-4 ">
-          <span class=" ">{{prestamo.numeroPrestamo}}</span>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <mat-select placeholder="Seleccione el cliente " [(value)]="prestamo.cliente ">
-              <mat-option [value]="cliente.nombre " *ngFor="let cliente of listaCliente ">
-                {{cliente.nombre}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <input type="number " matInput placeholder="Tasa " [(ngModel)]="prestamo.tasa ">
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <input type="number " matInput placeholder="Capital Inicial " [(ngModel)]="movimiento.montoPrestado ">
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <input type="number " matInput placeholder="Cantidad cuotas " [(ngModel)]="prestamo.cantidadCuotas ">
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <input type="number " matInput placeholder="Monto de cuotas " [(ngModel)]="prestamo.montoCuotas ">
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <input type="date " matInput placeholder="Fecha apertura " [ngModel]=" prestamo.fechaInicio| date:
-  'yyyy-MM-dd' " (ngModelChange)="prestamo.fechaInicio=$event " id="FechaInicio " name="fechaInicio ">
-
-          </mat-form-field>
-        </div>
-      </div>
-
-    </div>
+  <div *ngIf="editMode " class="editarPrestamo">
+    <label for="cliente ">ID:</label>
+    {{prestamo.numeroPrestamo}}
+    <br>
+    <mat-form-field>
+      <mat-select placeholder="Seleccione el cliente " [(value)]="prestamo.cliente ">
+        <mat-option [value]="cliente.nombre " *ngFor="let cliente of listaCliente ">
+          {{cliente.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number " matInput placeholder="Tasa " [(ngModel)]="prestamo.tasa ">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number " matInput placeholder="Capital Inicial " [(ngModel)]="movimiento.montoPrestado ">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number " matInput placeholder="Cantidad cuotas " [(ngModel)]="prestamo.cantidadCuotas ">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number " matInput placeholder="Monto de cuotas " [(ngModel)]="prestamo.montoCuotas ">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="date " matInput placeholder="Fecha apertura " [ngModel]=" prestamo.fechaInicio| date:
+             'yyyy-MM-dd' " (ngModelChange)="prestamo.fechaInicio=$event " id="FechaInicio " name="fechaInicio ">
+    </mat-form-field>
+  </div>
+</div>

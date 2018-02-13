@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewEncapsulation, Input,OnChanges, SimpleChange,Output,EventEmitter  } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, OnChanges, SimpleChange, Output, EventEmitter } from '@angular/core';
 import { Prestamo, Movimiento } from '../../clases/cliente';
 import { ClientesService } from '../../servicios/clientes.service';
 import { DataFirebaseService } from '../../servicios/data-firebase.service'
-import {Cliente} from '../../clases/cliente'
+import { Cliente } from '../../clases/cliente'
 
 
 @Component({
@@ -13,7 +13,7 @@ import {Cliente} from '../../clases/cliente'
 })
 export class DetallePrestamoComponent implements OnInit {
 
-  @Output() prestamoActual = new EventEmitter() ;
+  @Output() prestamoActual = new EventEmitter();
   @Input() prestamo: Prestamo;
 
   editMode: boolean = false;
@@ -28,8 +28,8 @@ export class DetallePrestamoComponent implements OnInit {
 
   obtenerMovimientoAmodificar() {
     var subscripcion = this.db.obtenerMovimientoInicial(this.prestamo).subscribe(movimiento => {
-      this.movimiento = movimiento[0];      
-      console.log (movimiento[0])
+      this.movimiento = movimiento[0];
+      console.log(movimiento[0])
       subscripcion.unsubscribe();
 
     })
@@ -41,11 +41,11 @@ export class DetallePrestamoComponent implements OnInit {
   }
 
   obtenerClientes(): void {
-    var subscripcion = this.db.obtenerClientes().subscribe(listaCliente => { this.listaCliente = listaCliente; subscripcion.unsubscribe();});
+    var subscripcion = this.db.obtenerClientes().subscribe(listaCliente => { this.listaCliente = listaCliente; subscripcion.unsubscribe(); });
   }
   guardar(): void {
-   
-   // this.movimiento.numeroPrestamo = this.prestamo.numeroPrestamo;
+
+    // this.movimiento.numeroPrestamo = this.prestamo.numeroPrestamo;
     //this.movimiento.cliente = this.prestamo.cliente;
     //this.movimiento.tipoMovimiento = "inicial";
     this.movimiento.montoTotal = this.prestamo.capitalPrestado;
@@ -54,7 +54,7 @@ export class DetallePrestamoComponent implements OnInit {
     this.prestamo.fechaInicio = new Date(this.prestamo.fechaInicio);
     this.db.modificarMovimiento(this.movimiento);
 
-    var subscripcion =  this.db.obtenerMovimientosPorPrestamo(this.prestamo.numeroPrestamo).subscribe((listaMovimientos) => {
+    var subscripcion = this.db.obtenerMovimientosPorPrestamo(this.prestamo.numeroPrestamo).subscribe((listaMovimientos) => {
       var valoresCalculados = this.db.calcularValoresPrestamo(listaMovimientos, this.prestamo);
       this.prestamo.capitalPrestado = valoresCalculados.capitalPrestado;
       this.prestamo.pagadoCapital = valoresCalculados.pagadoCapital;
@@ -76,7 +76,7 @@ export class DetallePrestamoComponent implements OnInit {
   constructor(private clientesService: ClientesService, private db: DataFirebaseService) {
   }
   ngOnInit() {
-    this.obtenerMovimientoAmodificar();
+    // this.obtenerMovimientoAmodificar();
     this.obtenerClientes();
   }
 
