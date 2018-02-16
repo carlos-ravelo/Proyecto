@@ -1,9 +1,14 @@
-import { Component, OnInit, ViewEncapsulation, Input,Output, Inject,EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, Output, Inject, EventEmitter } from '@angular/core';
 import { Cliente, Movimiento, Prestamo } from '../../clases/cliente'
 import { ClientesService } from '../../servicios/clientes.service';
 import { DataFirebaseService } from '../../servicios/data-firebase.service'
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import {MAT_DIALOG_DATA,MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import * as moment from 'moment';
+/* import * as finance from 'node-finance'
+ */
+
+
 
 
 @Component({
@@ -20,7 +25,7 @@ export class FormPrestamosComponent implements OnInit {
   errorMontoCuotas: boolean = false;
   errorCliente: boolean = false;
 
-  constructor(private clientesService: ClientesService, private db: DataFirebaseService, private datepipe: DatePipe,public dialogRef: MatDialogRef<FormPrestamosComponent>) {
+  constructor(private clientesService: ClientesService, private db: DataFirebaseService, private datepipe: DatePipe, public dialogRef: MatDialogRef<FormPrestamosComponent>) {
   }
   obtenerClientes(): void {
     this.db.obtenerClientes().subscribe(listaCliente => { this.listaCliente = listaCliente; });
@@ -34,7 +39,7 @@ export class FormPrestamosComponent implements OnInit {
       tasa: 0,
       montoCuotas: 0,
       cantidadCuotas: 0,
-      diaPagoMes: 0,
+      fechaProximoPago: new Date(),
       pagadoCapital: 0,
       fechaInicio: new Date(),
       capitalPendiente: 0,
@@ -52,7 +57,7 @@ export class FormPrestamosComponent implements OnInit {
       capitalDelPago: 0,
       montoPrestado: 0
     }
-    
+
 
   }
   pad(n, width, z) {
@@ -93,9 +98,7 @@ export class FormPrestamosComponent implements OnInit {
 
     this.obtenerClientes();
     this.clear();
-    this.prestamo.fechaInicio = new Date("2018-01-10")
-    console.log(this.prestamo.fechaInicio)
-
+    this.prestamo.fechaInicio = new Date();
     this.ObtenerSiguientePrestamo();
   }
   calcularMontoCuota() {
@@ -106,11 +109,16 @@ export class FormPrestamosComponent implements OnInit {
       this.prestamo.montoCuotas = parseFloat((r * (pv) / (1 - Math.pow((1 + r), n)) * 100 / 100).toFixed(2));
     }
   }
-  abrirModalFormClientes(){
+  abrirModalFormClientes() {
     this.dialogRef.close("abrirModalFormCliente");
   }
+
+  formatFecha(event) {
+    console.log(event.value.format())
+    return (event.value.format())
+  }
   crearPrestamo() {
-    this.prestamo.fechaInicio = new Date(this.prestamo.fechaInicio)
+    // this.prestamo.fechaInicio = this.prestamo.fechaInicio;
     this.prestamo.capitalPendiente = this.prestamo.capitalPrestado;
     if (this.prestamo.cliente == "default" || this.prestamo.cliente == "") { this.errorCliente = true; setTimeout(() => { this.errorCliente = false; }, 2000); return; }
     if (this.prestamo.capitalPrestado == 0) { this.errorCapitalInicial = true; setTimeout(() => { this.errorCapitalInicial = false; }, 2000); return; }

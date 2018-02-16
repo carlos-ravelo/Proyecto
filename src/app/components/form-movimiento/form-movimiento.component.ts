@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 declare var $: any;
 declare var jQuery: any;
+import * as moment from 'moment'
 
 
 
@@ -21,7 +22,7 @@ export class FormMovimientoComponent implements OnInit {
   errorMontoPrestado: boolean
   errorInteresOCapital: boolean;
 
-  constructor( @Inject(MAT_DIALOG_DATA) public data: any, private db: DataFirebaseService, public dialogRef: MatDialogRef<FormMovimientoComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private db: DataFirebaseService, public dialogRef: MatDialogRef<FormMovimientoComponent>) { }
 
   clear() {
     this.movimiento = {
@@ -30,6 +31,7 @@ export class FormMovimientoComponent implements OnInit {
       tipoMovimiento: this.data.tipoMovimiento,
       montoTotal: 0,
       fechaTransaccion: new Date(),
+      fechaCorrespondiente: this.prestamo.fechaProximoPago,
       notas: "",
       interesDelPago: 0,
       capitalDelPago: 0,
@@ -78,11 +80,18 @@ export class FormMovimientoComponent implements OnInit {
       this.prestamo.pagadoCapital = valoresCalculados.pagadoCapital;
       this.prestamo.montoCuotas = valoresCalculados.montoCuotas;
       this.prestamo.capitalPendiente = valoresCalculados.capitalPendiente;
+      let a = moment(this.prestamo.fechaProximoPago);
+      this.prestamo.fechaProximoPago = a.add(1, 'month').format();
       this.db.modificarPrestamo(this.prestamo);
       subscripcion.unsubscribe();
       this.clear();
     });
     this.dialogRef.close();
 
+  }
+
+  formatFecha(event) {
+    console.log(event.value.format())
+    return (event.value.format())
   }
 }

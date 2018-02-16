@@ -82,9 +82,9 @@
 
     <mat-form-field>
       <mat-select [(value)]="prestamo.cliente" placeholder="Seleccione el cliente">
-          <mat-option>
-              <button mat-button color="primary" (click)="abrirModalFormClientes()">Agregar nuevo cliente</button>
-            </mat-option>
+        <mat-option>
+          <button mat-button color="primary" (click)="abrirModalFormClientes()">Agregar nuevo cliente</button>
+        </mat-option>
         <mat-option [value]="cliente.nombre" *ngFor="let cliente of listaCliente">{{cliente.nombre}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -117,15 +117,18 @@
       <strong>error!</strong> El Monto no puede ser 0 !
     </div>
 
-
     <mat-form-field>
-      <input matInput type="Date" (ngModelChange)="prestamo.fechaInicio = $event" placeholder="Fecha de inicio" id="montoCuotas"
-        name="montoCuotas" [ngModel]=" prestamo.fechaInicio| date:'yyyy-MM-dd'">
+      <input matInput [matDatepicker]="fechaInicio" placeholder="Fecha de inicio" (dateChange)="prestamo.fechaInicio=formatFecha($event)"
+        [value]="prestamo.fechaInicio">
+      <mat-datepicker-toggle matSuffix [for]="fechaInicio"></mat-datepicker-toggle>
+      <mat-datepicker #fechaInicio></mat-datepicker>
     </mat-form-field>
 
-
     <mat-form-field>
-      <input matInput type="number" max="30" min="1" placeholder="Dia del mes que se paga" id="FechaPago" name="FechaPago" [(ngModel)]="prestamo.diaPagoMes">
+      <input matInput [matDatepicker]="fechaProximoPago" placeholder="Fecha primer pago" (dateChange)="prestamo.fechaProximoPago=formatFecha($event)"
+        [value]="prestamo.fechaProximoPago">
+      <mat-datepicker-toggle matSuffix [for]="fechaProximoPago"></mat-datepicker-toggle>
+      <mat-datepicker #fechaProximoPago></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field>

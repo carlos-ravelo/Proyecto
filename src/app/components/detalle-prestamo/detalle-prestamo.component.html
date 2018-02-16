@@ -59,7 +59,7 @@
     <mat-grid-tile>
       <div #fechaProximoPago>
         <label for="fechaProxPago ">Fecha prox. pago:</label>
-        <span>Todavia</span>
+        {{prestamo.fechaProximoPago|date}}
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
@@ -186,6 +186,10 @@
     <mat-form-field>
       <input type="date " matInput placeholder="Fecha apertura " [ngModel]=" prestamo.fechaInicio| date:
              'yyyy-MM-dd' " (ngModelChange)="prestamo.fechaInicio=$event " id="FechaInicio " name="fechaInicio ">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="date " matInput placeholder="Fecha proximo pago " [ngModel]=" prestamo.fechaProximoPago| date:
+             'yyyy-MM-dd' " (ngModelChange)="prestamo.fechaProximoPago=$event " id="fechaProximoPago " name="fechaProximoPago ">
     </mat-form-field>
   </div>
 </div>
