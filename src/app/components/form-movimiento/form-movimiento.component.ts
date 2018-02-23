@@ -9,6 +9,7 @@ import * as moment from 'moment'
 
 
 
+
 @Component({
   selector: 'app-form-movimiento',
   templateUrl: './form-movimiento.component.html',
@@ -22,7 +23,8 @@ export class FormMovimientoComponent implements OnInit {
   errorMontoPrestado: boolean
   errorInteresOCapital: boolean;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private db: DataFirebaseService, public dialogRef: MatDialogRef<FormMovimientoComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private db: DataFirebaseService,
+    public dialogRef: MatDialogRef<FormMovimientoComponent>) { }
 
   clear() {
     this.movimiento = {
@@ -39,11 +41,16 @@ export class FormMovimientoComponent implements OnInit {
 
     }
     if (this.movimiento.tipoMovimiento == 'pago') {
-      this.movimiento.interesDelPago = this.prestamo.capitalPendiente * this.prestamo.tasa / 100 / 12
+      this.movimiento.interesDelPago = this.round(this.prestamo.capitalPendiente * this.prestamo.tasa / 100 / 12, 2)
       this.movimiento.capitalDelPago = this.prestamo.montoCuotas - this.movimiento.interesDelPago;
     }
   }
 
+
+  round(value, precision) {
+    var multiplier = Math.pow(10, precision || 0);
+    return Math.round(value * multiplier) / multiplier;
+  }
   cambioTipoMovimiento() {
     if (this.movimiento.tipoMovimiento == 'pago') { this.movimiento.interesDelPago = this.prestamo.capitalPendiente * this.prestamo.tasa / 100 / 12 }
   }
@@ -78,7 +85,9 @@ export class FormMovimientoComponent implements OnInit {
       var valoresCalculados = this.db.calcularValoresPrestamo(listaMovimientos, this.prestamo);
       this.prestamo.capitalPrestado = valoresCalculados.capitalPrestado;
       this.prestamo.pagadoCapital = valoresCalculados.pagadoCapital;
-      this.prestamo.montoCuotas = valoresCalculados.montoCuotas;
+      // this.prestamo.montoCuotas = valoresCalculados.montoCuotas;
+      //this.prestamo.montoCuotas = this.funcionesComunes.calcularMontoCuota(this.prestamo);
+
       this.prestamo.capitalPendiente = valoresCalculados.capitalPendiente;
       let a = moment(this.prestamo.fechaProximoPago);
       this.prestamo.fechaProximoPago = a.add(1, 'month').format();

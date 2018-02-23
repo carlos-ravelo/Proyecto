@@ -66,6 +66,7 @@ import * as Date from 'datejs'
 import { MatDatepicker, MatDatepickerModule } from '@angular/material';
 import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter'
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 export const MY_FORMATS = {
   parse: {
     dateInput: 'LL',
@@ -93,7 +94,8 @@ export const MY_FORMATS = {
     LoginComponent,
     MovimientosPorPrestamoComponent,
     ModificarMovimientoComponent,
-    AmortizacionComponent
+    AmortizacionComponent,
+
   ],
   entryComponents: [
     ModificarMovimientoComponent
@@ -129,12 +131,13 @@ export const MY_FORMATS = {
     MatTableModule,
     MatPaginatorModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatTooltipModule
 
   ],
   providers: [ClientesService, AngularFireModule, DataFirebaseService, CurrencyPipe, DatePipe, AngularFireAuth,
     CanActivateviaAuthGuardService, { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },],
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Cliente } from '../../clases/cliente';
 import { DataFirebaseService } from '../../servicios/data-firebase.service'
 import { Observable } from 'rxjs/Observable';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar,MatTable,MatTableDataSource } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatTable, MatTableDataSource } from '@angular/material';
 import { FormClientesComponent } from '../form-clientes/form-clientes.component';
 
 
@@ -16,6 +16,7 @@ export class ListaClientesComponent implements OnInit {
   listaCliente: Cliente[];
   clienteActual: Cliente;
   loading: boolean;
+  mostrarTodo: boolean;
 
   constructor(private db: DataFirebaseService, public dialog: MatDialog, public snackBar: MatSnackBar) {
   }
@@ -41,28 +42,17 @@ export class ListaClientesComponent implements OnInit {
 
   obtenerClientes(): void {
     this.loading = true;
+    this.mostrarTodo = true;
     this.db.obtenerClientes().subscribe(listaCliente => {
-      const clienteActualBackUp = this.clienteActual; this.listaCliente = listaCliente;
-            if (!this.clienteActual) {
-        this.clienteActual = this.listaCliente[0]
-      }
-      else {
-        this.clienteActual = this.listaCliente.find(cliente => cliente.id === clienteActualBackUp.id);
-      }
+      this.listaCliente = listaCliente;
+      this.clienteActual = (!this.clienteActual) ? this.listaCliente[0] : this.listaCliente.find(cliente => cliente.id === this.clienteActual.id);
+      this.mostrarTodo = listaCliente[0] ? true : false;
       this.loading = false;
-
     });
   }
   borrarCliente() {
-    if (this.listaCliente.length > 1) {
-      this.db.borrarCliente(this.clienteActual)
-      this.clienteActual = this.listaCliente[0];
-    }
-    else {
-      alert("No puede borrar todos los Clientes");
-    }
-
+    this.db.borrarCliente(this.clienteActual);
+    this.clienteActual = this.listaCliente[0];
   }
 
 }
- 

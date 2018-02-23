@@ -5,8 +5,8 @@ import { DataFirebaseService } from '../../servicios/data-firebase.service'
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import * as moment from 'moment';
-/* import * as finance from 'node-finance'
- */
+
+
 
 
 
@@ -25,7 +25,8 @@ export class FormPrestamosComponent implements OnInit {
   errorMontoCuotas: boolean = false;
   errorCliente: boolean = false;
 
-  constructor(private clientesService: ClientesService, private db: DataFirebaseService, private datepipe: DatePipe, public dialogRef: MatDialogRef<FormPrestamosComponent>) {
+  constructor(private db: DataFirebaseService, private datepipe: DatePipe,
+    public dialogRef: MatDialogRef<FormPrestamosComponent>, ) {
   }
   obtenerClientes(): void {
     this.db.obtenerClientes().subscribe(listaCliente => { this.listaCliente = listaCliente; });
@@ -95,26 +96,35 @@ export class FormPrestamosComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.obtenerClientes();
     this.clear();
     this.prestamo.fechaInicio = new Date();
     this.ObtenerSiguientePrestamo();
   }
+
+
+  NPER(ir: number, per: number, pmt: number, pv: number) {
+    /*ir -> Interes anual
+    per -> Numero de periodos por año (mensual = 12, quincenal = 24)
+    pmt: Pago Fijo Mensual
+    pv: Cantidad Prestada
+    */
+    let fv = 0;
+    var nbperiods;
+    if (ir != 0)
+      ir = ir / (100 * per);
+    nbperiods = Math.log((-fv * ir + pmt) / (pmt + ir * pv)) / Math.log(1 + ir)
+
+    return nbperiods;
+  }
   calcularMontoCuota() {
-    if (this.prestamo.capitalPrestado > 0 && this.prestamo.tasa > 0 && this.prestamo.cantidadCuotas > 0) {
-      let r = this.prestamo.tasa / 12 / 100;
-      let pv = this.prestamo.capitalPrestado;
-      let n = this.prestamo.cantidadCuotas * -1
-      this.prestamo.montoCuotas = parseFloat((r * (pv) / (1 - Math.pow((1 + r), n)) * 100 / 100).toFixed(2));
-    }
+    this.prestamo.capitalPendiente = this.prestamo.capitalPrestado;
+    //this.prestamo.montoCuotas = this.funcionesComunes.calcularMontoCuota(this.prestamo);
   }
   abrirModalFormClientes() {
     this.dialogRef.close("abrirModalFormCliente");
   }
-
   formatFecha(event) {
-    console.log(event.value.format())
     return (event.value.format())
   }
   crearPrestamo() {
