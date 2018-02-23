@@ -5,6 +5,8 @@ import { DataFirebaseService } from '../../servicios/data-firebase.service'
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import * as moment from 'moment';
+import { FuncionesComunesService } from '../../servicios/funciones-comunes.service';
+
 
 
 
@@ -26,7 +28,7 @@ export class FormPrestamosComponent implements OnInit {
   errorCliente: boolean = false;
 
   constructor(private db: DataFirebaseService, private datepipe: DatePipe,
-    public dialogRef: MatDialogRef<FormPrestamosComponent>, ) {
+    public dialogRef: MatDialogRef<FormPrestamosComponent>, private funcionesComunes: FuncionesComunesService) {
   }
   obtenerClientes(): void {
     this.db.obtenerClientes().subscribe(listaCliente => { this.listaCliente = listaCliente; });
@@ -119,7 +121,7 @@ export class FormPrestamosComponent implements OnInit {
   }
   calcularMontoCuota() {
     this.prestamo.capitalPendiente = this.prestamo.capitalPrestado;
-    //this.prestamo.montoCuotas = this.funcionesComunes.calcularMontoCuota(this.prestamo);
+    this.prestamo.montoCuotas = this.funcionesComunes.calcularMontoCuota(this.prestamo);
   }
   abrirModalFormClientes() {
     this.dialogRef.close("abrirModalFormCliente");

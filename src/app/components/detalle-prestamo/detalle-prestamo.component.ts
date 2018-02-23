@@ -4,6 +4,8 @@ import { ClientesService } from '../../servicios/clientes.service';
 import { DataFirebaseService } from '../../servicios/data-firebase.service'
 import { Cliente } from '../../clases/cliente'
 import * as moment from 'moment';
+import { FuncionesComunesService } from '../../servicios/funciones-comunes.service';
+
 
 
 
@@ -21,14 +23,14 @@ export class DetallePrestamoComponent implements OnInit {
   //fechaProxPago: Date;
   montoAtraso: Number;
   capitalPagado: Number;
-  calculatedValues: any;
   movimiento: Movimiento;
   listaCliente: Cliente[];
 
-  constructor(private db: DataFirebaseService) {
+  constructor(private db: DataFirebaseService, private funcionesComunes: FuncionesComunesService) {
   }
 
   obtenerMovimientoAmodificar() {
+
     var subscripcion = this.db.obtenerMovimientoInicial(this.prestamo).subscribe(movimiento => {
       this.movimiento = movimiento[0];
       console.log(movimiento[0])
@@ -62,7 +64,7 @@ export class DetallePrestamoComponent implements OnInit {
     this.db.modificarMovimiento(this.movimiento);
 
     let subscripcion = this.db.obtenerMovimientosPorPrestamo(this.prestamo.numeroPrestamo).subscribe((listaMovimientos) => {
-      var valoresCalculados = this.db.calcularValoresPrestamo(listaMovimientos, this.prestamo);
+      let valoresCalculados = this.funcionesComunes.calcularValoresPrestamo(listaMovimientos, this.prestamo);
       this.prestamo.capitalPrestado = valoresCalculados.capitalPrestado;
       this.prestamo.pagadoCapital = valoresCalculados.pagadoCapital;
       this.prestamo.capitalPendiente = valoresCalculados.capitalPendiente;
@@ -79,7 +81,7 @@ export class DetallePrestamoComponent implements OnInit {
   identify(index, post: Number) { return 0 }
 
   calcularMontoCuota() {
-    //  this.prestamo.montoCuotas = this.funcionesComunes.calcularMontoCuota(this.prestamo);
+    this.prestamo.montoCuotas = this.funcionesComunes.calcularMontoCuota(this.prestamo);
   }
 
   calculateMontoAtraso() {

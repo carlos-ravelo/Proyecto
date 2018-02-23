@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { FormMovimientoComponent } from '../form-movimiento/form-movimiento.component';
 import { ModificarMovimientoComponent } from '../modificar-movimiento/modificar-movimiento.component';
+import { FuncionesComunesService } from '../../servicios/funciones-comunes.service';
 
 declare var $: any;
 declare var jQuery: any;
@@ -31,6 +32,8 @@ export class MovimientosPorPrestamoComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  constructor(private db: DataFirebaseService, private clientesService: ClientesService,
+    public dialog: MatDialog, private funcionesComunes: FuncionesComunesService) { }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -78,11 +81,11 @@ export class MovimientosPorPrestamoComponent implements OnInit {
 
   actualizarPrestamo() {
     let subscripcion = this.db.obtenerMovimientosPorPrestamo(this.prestamo.numeroPrestamo).subscribe((listaMovimientos) => {
-      let valoresCalculados = this.db.calcularValoresPrestamo(listaMovimientos, this.prestamo);
+      let valoresCalculados = this.funcionesComunes.calcularValoresPrestamo(listaMovimientos, this.prestamo);
       this.prestamo.capitalPrestado = valoresCalculados.capitalPrestado;
       this.prestamo.pagadoCapital = valoresCalculados.pagadoCapital;
-      this.prestamo.montoCuotas = valoresCalculados.montoCuotas;
       this.prestamo.capitalPendiente = valoresCalculados.capitalPendiente;
+      this.prestamo.montoCuotas = this.funcionesComunes.calcularMontoCuota(this.prestamo);
       this.db.modificarPrestamo(this.prestamo);
       subscripcion.unsubscribe();
     });
@@ -107,7 +110,6 @@ export class MovimientosPorPrestamoComponent implements OnInit {
 
     this.movimientoActual = movimiento;
   }
-  constructor(private db: DataFirebaseService, private clientesService: ClientesService, public dialog: MatDialog) { }
 
 
   cambiarCreateFormMovimientos(evento) {

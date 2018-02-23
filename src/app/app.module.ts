@@ -80,6 +80,9 @@ export const MY_FORMATS = {
 };
 
 
+import { FuncionesComunesService } from './servicios/funciones-comunes.service'
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -137,7 +140,7 @@ export const MY_FORMATS = {
   ],
   providers: [ClientesService, AngularFireModule, DataFirebaseService, CurrencyPipe, DatePipe, AngularFireAuth,
     CanActivateviaAuthGuardService, { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }],
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }, FuncionesComunesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

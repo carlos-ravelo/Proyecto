@@ -6,6 +6,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 declare var $: any;
 declare var jQuery: any;
 import * as moment from 'moment'
+import { FuncionesComunesService } from '../../servicios/funciones-comunes.service';
+
 
 
 
@@ -24,7 +26,7 @@ export class FormMovimientoComponent implements OnInit {
   errorInteresOCapital: boolean;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private db: DataFirebaseService,
-    public dialogRef: MatDialogRef<FormMovimientoComponent>) { }
+    public dialogRef: MatDialogRef<FormMovimientoComponent>, private funcionesComunes: FuncionesComunesService) { }
 
   clear() {
     this.movimiento = {
@@ -82,12 +84,10 @@ export class FormMovimientoComponent implements OnInit {
     else if (this.tipoMovimiento == 'pago') { this.movimiento.montoPrestado = 0 }
     this.db.insertarMovimiento(this.movimiento);
     var subscripcion = this.db.obtenerMovimientosPorPrestamo(this.prestamo.numeroPrestamo).subscribe((listaMovimientos) => {
-      var valoresCalculados = this.db.calcularValoresPrestamo(listaMovimientos, this.prestamo);
+      var valoresCalculados = this.funcionesComunes.calcularValoresPrestamo(listaMovimientos, this.prestamo);
       this.prestamo.capitalPrestado = valoresCalculados.capitalPrestado;
       this.prestamo.pagadoCapital = valoresCalculados.pagadoCapital;
-      // this.prestamo.montoCuotas = valoresCalculados.montoCuotas;
-      //this.prestamo.montoCuotas = this.funcionesComunes.calcularMontoCuota(this.prestamo);
-
+      this.prestamo.montoCuotas = this.funcionesComunes.calcularMontoCuota(this.prestamo);
       this.prestamo.capitalPendiente = valoresCalculados.capitalPendiente;
       let a = moment(this.prestamo.fechaProximoPago);
       this.prestamo.fechaProximoPago = a.add(1, 'month').format();
