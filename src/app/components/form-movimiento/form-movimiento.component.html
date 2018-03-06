@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Agregar Prestamo a la Base de datos</h1>
+<h1 mat-dialog-title>Agregar Movimiento</h1>
 <mat-dialog-content>
   <div class="list-group" class="col-sm-8">
     <div class="form-group">
@@ -37,13 +37,29 @@
           {{movimiento.interesDelPago+movimiento.capitalDelPago}}
         </label>
       </div>
-      <mat-form-field>
+      <!--    <mat-form-field>
         <input matInput type="Date" placeholder="Fecha correspondiente :" id="fechaCorrespondiente" name="fechaCorrespondiente" [(ngModel)]="movimiento.fechaCorrespondiente">
       </mat-form-field>
+   
+ -->
     </div>
     <mat-form-field>
+      <input matInput [matDatepicker]="fechaCorrespondiente" placeholder="Fecha correspondiente" (dateChange)="movimiento.fechaCorrespondiente=formatFecha($event)"
+        [value]="movimiento.fechaCorrespondiente">
+      <mat-datepicker-toggle matSuffix [for]="fechaCorrespondiente"></mat-datepicker-toggle>
+      <mat-datepicker #fechaCorrespondiente></mat-datepicker>
+    </mat-form-field>
+
+    <!--     <mat-form-field>
       <input matInput type="Date" placeholder="Fecha transaccion" id="fechaTransaccion" name="fechaTransaccion" [ngModel]="movimiento.fechaTransaccion|date:'yyyy-MM-dd'"
         (ngModelChange)="movimiento.fechaTransaccion = $event">
+    </mat-form-field> -->
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="fechaTransaccion" placeholder="Fecha transaccion" (dateChange)="movimiento.fechaTransaccion=formatFecha($event)"
+        [value]="movimiento.fechaTransaccion">
+      <mat-datepicker-toggle matSuffix [for]="fechaTransaccion"></mat-datepicker-toggle>
+      <mat-datepicker #fechaTransaccion></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field>

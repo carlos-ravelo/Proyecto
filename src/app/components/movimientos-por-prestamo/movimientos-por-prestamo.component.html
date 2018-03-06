@@ -22,7 +22,9 @@
       <thead>
         <tr>
           <th>Tipo</th>
-          <th>Fecha</th>
+          <th>Fecha corresp.</th>
+          <th>Fecha trans.</th>
+
           <th>Interes</th>
           <th>Capital</th>
           <th>Prestado</th>
@@ -31,6 +33,7 @@
       <tbody>
         <tr *ngFor="let movimiento of listaMovimientos" (click)="onSelect(movimiento)" [ngClass]="{'active':movimiento==movimientoActual}">
           <td>{{movimiento.tipoMovimiento}}</td>
+          <td>{{movimiento.fechaCorrespondiente|date}}</td>
           <td>{{movimiento.fechaTransaccion|date}}</td>
           <td>{{movimiento.interesDelPago| currency}}</td>
           <td>{{movimiento.capitalDelPago| currency}}</td>
@@ -43,7 +46,7 @@
 <br>
 <br>
 <br>
-<div class="example-container mat-elevation-z20">
+<!-- <div class="example-container mat-elevation-z4">
   <mat-table #table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="tipoMovimiento">
@@ -72,4 +75,4 @@
   <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]">
   </mat-paginator>
 
-</div>
+</div> -->

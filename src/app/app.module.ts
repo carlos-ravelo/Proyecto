@@ -58,6 +58,32 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { AmortizacionComponent } from './components/amortizacion/amortizacion.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatNativeDateModule } from '@angular/material'
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+
+
+//Moment y  MatDatepicker
+import * as Date from 'datejs'
+import { MatDatepicker, MatDatepickerModule } from '@angular/material';
+import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter'
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'LL',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
+
+import { FuncionesComunesService } from './servicios/funciones-comunes.service';
+import { CargandoComponent } from './components/cargando/cargando.component'
 
 
 @NgModule({
@@ -74,7 +100,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     LoginComponent,
     MovimientosPorPrestamoComponent,
     ModificarMovimientoComponent,
-    AmortizacionComponent
+    AmortizacionComponent,
+    CargandoComponent,
+
   ],
   entryComponents: [
     ModificarMovimientoComponent
@@ -108,11 +136,16 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatMenuModule,
     MatSnackBarModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTooltipModule,
+    MatProgressBarModule,
 
   ],
   providers: [ClientesService, AngularFireModule, DataFirebaseService, CurrencyPipe, DatePipe, AngularFireAuth,
-    CanActivateviaAuthGuardService,],
+    CanActivateviaAuthGuardService, { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }, FuncionesComunesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

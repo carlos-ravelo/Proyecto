@@ -1,77 +1,4 @@
 <h1 mat-dialog-title>Agregar Prestamo </h1>
-<!-- <mat-dialog-content>
-
-  <div class="list-group" class="col-sm-8">
-    <div>
-      <div class="form-group">
-        <label>Numero de Prestamo:</label>
-        <small>====>{{prestamo.numeroPrestamo}}
-      </div>
-
-      <div class="form-group">
-        <label>Cliente:</label>
-        <select required name="cliente" [(ngModel)]="prestamo.cliente">
-          <option value="default">Seleccione el cliente</option>
-          <option *ngFor="let cliente of listaCliente">{{cliente.nombre}}</option>
-        </select>
-        <div class="alert alert-danger" *ngIf="errorCliente">
-          <strong>error!</strong> Debe Seleccionar el cliente !
-        </div>
-        <a class="fa fa-plus-square-o btn btn-link" routerLink="/add-cliente">Agregar nuevo cliente</a>
-      </div>
-
-
-      <div class="form-group">
-        <label>Capital Prestado :</label>
-        <input (blur)="calcularMontoCuota()" required type="number" [(ngModel)]="prestamo.capitalPendiente" [(ngModel)]="prestamo.capitalPrestado"
-          class="form-control" id="capital" name="capital" required>
-        <div class="alert alert-danger" *ngIf="errorCapitalInicial">
-          <strong>error!</strong> El capital Inicial no puede ser 0 !
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Tasa:</label>
-        <input (blur)="calcularMontoCuota()" required type="number" [(ngModel)]="prestamo.tasa" step=".01" class="form-control" id="Tasa"
-          name="tasa" placeholder="%" required>
-      </div>
-
-      <div class="form-group">
-        <label>Cantidad de cuotas:</label>
-        <input (blur)="calcularMontoCuota()" type="number" [(ngModel)]="prestamo.cantidadCuotas" class="form-control" id="cantCuotas"
-          name="cantCuota">
-      </div>
-
-      <div class="form-group">
-        <label>Monto cuotas:</label>
-        <input type="number" [(ngModel)]="prestamo.montoCuotas" class="form-control" id="cuota" name="cuota">
-        <div class="alert alert-danger" *ngIf="errorMontoCuotas">
-          <strong>error!</strong> El Monto no puede ser 0 !
-        </div>
-      </div>
-
-
-      <div class="form-group">
-        <label>Fecha de inicio</label>
-        <input [ngModel]=" prestamo.fechaInicio| date:'yyyy-MM-dd'" (ngModelChange)="prestamo.fechaInicio = $event" type="date" class="form-control"
-          id="FechaInicio" name="fechaInicio" required>
-
-      </div>
-      <div class="form-group">
-        <label>Dia del mes que se paga</label>
-        <input type="number" max="30" min="1" [(ngModel)]="prestamo.diaPagoMes" class="form-control" id="FechaPago" name="FechaPago"
-          required>
-
-      </div>
-      <div class="form-group">
-        <label>Notas</label>
-        <input type="text=" class="form-control" id="notas" placeholder="agregar notas" name="notas">
-      </div>
-    </div>
-
-  </div>
-</mat-dialog-content> -->
-
 <mat-dialog-content>
 
   <div class="list-group" class="col-sm-8">
@@ -82,9 +9,9 @@
 
     <mat-form-field>
       <mat-select [(value)]="prestamo.cliente" placeholder="Seleccione el cliente">
-          <mat-option>
-              <button mat-button color="primary" (click)="abrirModalFormClientes()">Agregar nuevo cliente</button>
-            </mat-option>
+        <mat-option>
+          <button mat-button color="primary" (click)="abrirModalFormClientes()">Agregar nuevo cliente</button>
+        </mat-option>
         <mat-option [value]="cliente.nombre" *ngFor="let cliente of listaCliente">{{cliente.nombre}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -104,6 +31,13 @@
     <mat-form-field>
       <input (blur)="calcularMontoCuota()" matInput type="number" placeholder="Tasa" id="capitalPrestado" name="tasa" [(ngModel)]="prestamo.tasa">
     </mat-form-field>
+    <mat-form-field color="primary">
+      <mat-select placeholder="Tipo tasa">
+        <mat-option value='mensual'>Mensual</mat-option>
+        <mat-option value='anual'>Anual</mat-option>
+      </mat-select>
+    </mat-form-field>
+
 
     <mat-form-field>
       <input (blur)="calcularMontoCuota()" matInput type="number" placeholder="Cantidad de cuotas" id="cantidadCuotas" name="cantidadCuotas"
@@ -117,15 +51,18 @@
       <strong>error!</strong> El Monto no puede ser 0 !
     </div>
 
-
     <mat-form-field>
-      <input matInput type="Date" (ngModelChange)="prestamo.fechaInicio = $event" placeholder="Fecha de inicio" id="montoCuotas"
-        name="montoCuotas" [ngModel]=" prestamo.fechaInicio| date:'yyyy-MM-dd'">
+      <input matInput [matDatepicker]="fechaInicio" placeholder="Fecha de inicio" (dateChange)="prestamo.fechaInicio=formatFecha($event)"
+        [value]="prestamo.fechaInicio">
+      <mat-datepicker-toggle matSuffix [for]="fechaInicio"></mat-datepicker-toggle>
+      <mat-datepicker #fechaInicio></mat-datepicker>
     </mat-form-field>
 
-
     <mat-form-field>
-      <input matInput type="number" max="30" min="1" placeholder="Dia del mes que se paga" id="FechaPago" name="FechaPago" [(ngModel)]="prestamo.diaPagoMes">
+      <input matInput [matDatepicker]="fechaProximoPago" placeholder="Fecha primer pago" (dateChange)="prestamo.fechaProximoPago=formatFecha($event)"
+        [value]="prestamo.fechaProximoPago">
+      <mat-datepicker-toggle matSuffix [for]="fechaProximoPago"></mat-datepicker-toggle>
+      <mat-datepicker #fechaProximoPago></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field>

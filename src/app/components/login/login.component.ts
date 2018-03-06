@@ -41,10 +41,10 @@ export class LoginComponent implements OnInit {
   }
   ngOnInit() {
     console.log("iniciando login");
-    if (this.afAuth.auth.currentUser) {
-      console.log(this.afAuth.auth.currentUser)
-      this.router.navigate(['/clientes']);
-    }
+    /*  if (this.afAuth.auth.currentUser) {
+       console.log(this.afAuth.auth.currentUser)
+       this.router.navigate(['/clientes']);
+     } */
   }
 
 }

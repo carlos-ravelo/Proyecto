@@ -1,33 +1,46 @@
 <h1 mat-dialog-title>Modificar movimiento</h1>
 <mat-dialog-content>
   <mat-form-field>
-    <mat-select placeholder="Tipo Movimiento"  [(value)]="movimientoActual.tipoMovimiento">
+    <mat-select placeholder="Tipo Movimiento" [(value)]="movimientoActual.tipoMovimiento">
       <mat-option disabled value="inicial">Inicial</mat-option>
       <mat-option value="pago">Pago</mat-option>
       <mat-option value="desembolso">Desembolso</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field>
+  <!--   <mat-form-field>
     <input matInput placeholder="Fecha Transaccion:" [ngModel]="movimientoActual.fechaTransaccion|date:'yyyy-MM-dd'" name="fechaTransaccion"
       type="Date" id="fechaTransaccion" (ngModelChange)="movimientoActual.fechaTransaccion = $event">
+  </mat-form-field> -->
+  <mat-form-field>
+    <input matInput [matDatepicker]="fechaCorrespondiente" placeholder="Fecha correspondiente" [value]="movimientoActual.fechaCorrespondiente"
+      (dateChange)="movimientoActual.fechaCorrespondiente=formatFecha($event)">
+    <mat-datepicker-toggle matSuffix [for]="fechaCorrespondiente"></mat-datepicker-toggle>
+    <mat-datepicker #fechaCorrespondiente></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput [matDatepicker]="fechaTransaccion" placeholder="Fecha transaccion" [value]="movimientoActual.fechaTransaccion"
+      (dateChange)="movimientoActual.fechaTransaccion=formatFecha($event)">
+    <mat-datepicker-toggle matSuffix [for]="fechaTransaccion"></mat-datepicker-toggle>
+    <mat-datepicker #fechaTransaccion></mat-datepicker>
   </mat-form-field>
   <mat-form-field *ngIf="movimientoActual.tipoMovimiento=='pago'">
-    <input matInput placeholder="Interes del pago" (blur)="calcularMontoTotal()" [(ngModel)]="movimientoActual.interesDelPago" name="interesDelPago" type="number"
-      id="interesDelPago">
-      <div class="alert alert-danger" *ngIf="errorInteresOCapital">
-        <strong>error!</strong> Introduzca el interes o el capital del pago !
-      </div>
+    <input matInput placeholder="Interes del pago" (blur)="calcularMontoTotal()" [(ngModel)]="movimientoActual.interesDelPago"
+      name="interesDelPago" type="number" id="interesDelPago">
+    <div class="alert alert-danger" *ngIf="errorInteresOCapital">
+      <strong>error!</strong> Introduzca el interes o el capital del pago !
+    </div>
   </mat-form-field>
   <mat-form-field *ngIf="movimientoActual.tipoMovimiento=='pago'">
-    <input matInput (blur)="calcularMontoTotal()" placeholder="Capital del pago" [(ngModel)]="movimientoActual.capitalDelPago" name="capitalDelPago" type="number"
-      id="capitalDelPago">
+    <input matInput (blur)="calcularMontoTotal()" placeholder="Capital del pago" [(ngModel)]="movimientoActual.capitalDelPago"
+      name="capitalDelPago" type="number" id="capitalDelPago">
   </mat-form-field>
   <mat-form-field *ngIf="movimientoActual.tipoMovimiento!='pago'">
-    <input  matInput placeholder="Monto prestado" [(ngModel)]="movimientoActual.montoPrestado" name="montoPrestado" type="number"
+    <input matInput placeholder="Monto prestado" [(ngModel)]="movimientoActual.montoPrestado" name="montoPrestado" type="number"
       id="montoPrestado">
-      <div class="alert alert-danger" *ngIf="errorMontoPrestado">
-        <strong>error!</strong> El monto prestado no puede ser 0 !
-      </div>
+    <div class="alert alert-danger" *ngIf="errorMontoPrestado">
+      <strong>error!</strong> El monto prestado no puede ser 0 !
+    </div>
   </mat-form-field>
   <mat-form-field *ngIf="movimientoActual.tipoMovimiento=='pago'">
     <input matInput placeholder="Monto total" [(ngModel)]="movimientoActual.montoTotal" name="montoTotal" type="number" id="montoTotal">
@@ -37,6 +50,6 @@
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Cancelar</button>
-    <button mat-button   (click)="modificarMovimiento()">Guardar</button>
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button (click)="modificarMovimiento()">Guardar</button>
 </mat-dialog-actions>

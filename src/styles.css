@@ -6,3 +6,7 @@
   */
    @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
+   
+.mat-expansion-panel-body , .mat-card {
+    padding: 16px 3px !important;
+}

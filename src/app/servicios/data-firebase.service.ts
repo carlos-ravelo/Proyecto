@@ -18,7 +18,7 @@ export class DataFirebaseService {
   private MovimientoDoc: AngularFirestoreDocument<Movimiento>;
 
 
-  constructor(public db: AngularFirestore,public afAuth: AngularFireAuth,
+  constructor(public db: AngularFirestore, public afAuth: AngularFireAuth,
   ) {
     this.clientesCollection = db.collection<Cliente>(`usuarios/${this.afAuth.auth.currentUser.email}/clientes`);
     this.prestamosCollection = db.collection<Prestamo>(`usuarios/${this.afAuth.auth.currentUser.email}/prestamos`);
@@ -72,8 +72,8 @@ export class DataFirebaseService {
 
   //Obtiene la lista de movimientos de un prestamo en especifico
   obtenerMovimientosPorPrestamo(numeroPrestamo: string): Observable<any[]> {
-  
-    return this.db.collection(`usuarios/${this.afAuth.auth.currentUser.email}/movimientos`, ref => ref.where('numeroPrestamo', '==', numeroPrestamo)).snapshotChanges()
+
+    return this.db.collection(`usuarios/${this.afAuth.auth.currentUser.email}/movimientos`, ref => ref.where('numeroPrestamo', '==', numeroPrestamo).orderBy('fechaTransaccion', "asc")).snapshotChanges()
       .map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data() as Movimiento;
@@ -98,35 +98,28 @@ export class DataFirebaseService {
 
   }
 
-  //Retorna los valores calculados de un prestamo
-  calcularValoresPrestamo(movimientos: Movimiento[], prestamo: Prestamo): any {
-    console.log("calculando valores de prestamo", "movimientos", movimientos)
-    if (movimientos.length > 0) {
-      let capitalPrestado: number = 0;
-      let pagadoCapital: number = 0;
-      let montoCuotas: number = 0
-      for (var i = 0; i < movimientos.length; i++) {
-        if (movimientos[i].montoPrestado) {
-          capitalPrestado = capitalPrestado + movimientos[i].montoPrestado;
-        }
-        if (movimientos[i].capitalDelPago) {
-          pagadoCapital = pagadoCapital + movimientos[i].capitalDelPago;
-        }
-      }
-      let capitalPendiente = capitalPrestado - pagadoCapital;
-      //Calcular Monto Cuota
-      let r = prestamo.tasa / 12 / 100;
-      let pv = capitalPrestado;
-      let n = prestamo.cantidadCuotas * -1
-      montoCuotas = parseFloat((r * (pv) / (1 - Math.pow((1 + r), n)) * 100 / 100).toFixed(2));
-      return {
-        capitalPrestado: capitalPrestado,
-        pagadoCapital: pagadoCapital,
-        montoCuotas: montoCuotas,
-        capitalPendiente: capitalPendiente
-      }
-    }
-  }
+  /*  //Retorna los valores calculados de un prestamo
+   calcularValoresPrestamo(movimientos: Movimiento[], prestamo: Prestamo): any {
+     console.log("calculando valores de prestamo", "movimientos", movimientos)
+     if (movimientos.length > 0) {
+       let capitalPrestado: number = 0;
+       let pagadoCapital: number = 0;
+       for (var i = 0; i < movimientos.length; i++) {
+         if (movimientos[i].montoPrestado) {
+           capitalPrestado = capitalPrestado + movimientos[i].montoPrestado;
+         }
+         if (movimientos[i].capitalDelPago) {
+           pagadoCapital = pagadoCapital + movimientos[i].capitalDelPago;
+         }
+       }
+       let capitalPendiente = capitalPrestado - pagadoCapital;
+       return {
+         capitalPrestado: capitalPrestado,
+         pagadoCapital: pagadoCapital,
+         capitalPendiente: capitalPendiente
+       }
+     }
+   } */
 
 
   //Inserte un cliente nuevo
@@ -156,7 +149,7 @@ export class DataFirebaseService {
 
   //Borra un cliente
   borrarCliente(cliente: Cliente) {
-   // this.clienteDoc = this.db.doc(`/clientes/${cliente.id}`);
+    // this.clienteDoc = this.db.doc(`/clientes/${cliente.id}`);
     this.clienteDoc = this.clientesCollection.doc(cliente.id);
     this.clienteDoc.delete();
     console.log("se borro un cliente");
@@ -165,7 +158,7 @@ export class DataFirebaseService {
   //Borra un prestamo
   borrarPrestamo(prestamo: Prestamo) {
     //this.clienteDoc = this.db.doc(`/prestamos/${prestamo.numeroPrestamo}`);
-     this.prestamosCollection.doc(prestamo.numeroPrestamo).delete();
+    this.prestamosCollection.doc(prestamo.numeroPrestamo).delete();
     console.log("se borro un prestamo");
   }
 
@@ -189,25 +182,25 @@ export class DataFirebaseService {
   //Modifica un cliente 
   modificarCliente(cliente: any) {
     console.log("Modificando cliente", cliente)
-  /*   this.clienteDoc = this.db.doc(`/clientes/${cliente.id}`);
-    this.clienteDoc.update(cliente); */
-  this.clientesCollection.doc(cliente.id).update(cliente);
+    /*   this.clienteDoc = this.db.doc(`/clientes/${cliente.id}`);
+      this.clienteDoc.update(cliente); */
+    this.clientesCollection.doc(cliente.id).update(cliente);
   }
 
   //Modifica un Prestamo 
   modificarPrestamo(prestamo: any) {
     console.log("Modificando Prestamo", prestamo)
-/*     this.prestamoDoc = this.db.doc(`/prestamos/${prestamo.numeroPrestamo}`);
-    this.prestamoDoc.update(prestamo); */
+    /*     this.prestamoDoc = this.db.doc(`/prestamos/${prestamo.numeroPrestamo}`);
+        this.prestamoDoc.update(prestamo); */
     this.prestamosCollection.doc(prestamo.numeroPrestamo).update(prestamo);
 
   }
 
   //Modifica un Movimiento 
   modificarMovimiento(movimiento: Movimiento, ) {
- /*    console.log("modificando movimiento:", movimiento)
-    this.db.doc(`/movimientos/${movimiento.id}`).update(movimiento); */
-  this.movimientosCollection.doc(movimiento.id).update(movimiento);
+    /*    console.log("modificando movimiento:", movimiento)
+       this.db.doc(`/movimientos/${movimiento.id}`).update(movimiento); */
+    this.movimientosCollection.doc(movimiento.id).update(movimiento);
   }
 
 

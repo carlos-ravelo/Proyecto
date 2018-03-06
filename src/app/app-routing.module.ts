@@ -8,9 +8,11 @@ import { FormMovimientoComponent } from './components/form-movimiento/form-movim
 import { MovimientosPorPrestamoComponent } from './components/movimientos-por-prestamo/movimientos-por-prestamo.component'
 import { LoginComponent } from './components/login/login.component'
 import { CanActivateviaAuthGuardService } from './servicios/can-activatevia-auth-guard.service';
+import { CargandoComponent } from './components/cargando/cargando.component'
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/prestamos', pathMatch: 'full' },
+  { path: 'cargando', component: CargandoComponent },
   { path: 'login', component: LoginComponent },
   { path: 'clientes', component: ListaClientesComponent, canActivate: [CanActivateviaAuthGuardService] },
   { path: 'add-cliente', component: FormClientesComponent, canActivate: [CanActivateviaAuthGuardService] },

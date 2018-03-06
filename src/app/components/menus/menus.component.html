@@ -1,23 +1,24 @@
 <ul class="nav" id="side-menu">
   <li>
-    <a routerLink="/login">
+    <a routerLink="/clientes" (click)="closeNav.emit('')">
       <i class="fa fa-dashboard"></i> Dashboard</a>
   </li>
-  <li>
-    <a routerLink="/login" (click)=" logOut()">
-      <i class="fa fa-sign-out" aria-hidden="true"></i> LogOut</a>
-  </li>
+
   <li>
     <a routerLink="/clientes" (click)="closeNav.emit('')">
-      <i class="fa fa-users" aria-hidden="true" ></i> Clientes
+      <i class="fa fa-users" aria-hidden="true"></i> Clientes
       <span class="fa arrow"></span>
     </a>
-    </li>
+  </li>
   <li>
     <a routerLink="/prestamos" (click)="closeNav.emit('')">
       <i class="fa fa-university" aria-hidden="true"></i> Prestamos
       <span class="fa arrow"></span>
     </a>
+  </li>
+  <li>
+    <a routerLink="/login" (click)=" logOut()">
+      <i class="fa fa-sign-out" aria-hidden="true"></i> LogOut</a>
   </li>
 
 </ul>

@@ -24,75 +24,75 @@
 <!-- /Controles de abajo -->
 
 <mat-card>
-    <mat-card-title>
-        <h5> Detalles:</h5>
-        </mat-card-title>
-
-  <div class="container">
-    <div >
-      <label>Nombre:</label>
-      <p *ngIf="!editMode">{{cliente.nombre}}</p>
-      <input name="nombre" *ngIf="editMode" [(ngModel)]="cliente.nombre" placeholder="nombre" class="form-control input-sm" required>
-    </div>
-  </div>
-
-  <div class="container">
-    <div >
-      <b>Cuentas:</b>
-      <span *ngIf="editMode">
-        <a class="fa fa-plus-square-o btn btn-link" aria-hidden="true" (click)="addCuenta()">Add</a>
-        <a class="fa fa-minus-square-o btn btn-link" aria-hidden="true" (click)="delCuenta()">Del</a>
-      </span>
-
-      <span *ngFor="let cuenta of cliente.cuentas;index as i">
-        <div *ngIf="!editMode">
-          <p for="">{{cuenta.banco}}: {{cuenta.numero}}</p>
-        </div>
-        <div *ngIf="editMode">
-          <select name="banco" class="form-control input-sm" [(ngModel)]="cuenta.banco" required>
-            <option value="default">Seleccione</option>
-            <option *ngFor="let banco of listaBancos">{{banco}}</option>
-          </select>
-          <input type="number" name="nombre" [(ngModel)]="cuenta.numero" placeholder="Numero de cuenta" class="form-control input-sm"
-            required>
-        </div>
-      </span>
-    </div>
-  </div>
-
-  <div class="container">
-    <div >
-      <b>Telefonos:</b>
-      <span *ngIf="editMode">
-        <a (click)="addTelefono()" class="fa fa-plus-square-o btn btn-link" aria-hidden="true">Add</a>
-        <a (click)="delTelefono()" class="fa fa-minus-square-o btn " aria-hidden="true">Del</a>
-      </span>
-
-      <span *ngFor="let telefono of cliente.telefonos; index as i; trackBy:identify">
-        <p *ngIf="!editMode">
-          <label>{{i+1}}.</label> {{telefono}}</p>
-        <div class="input-group">
-          <input type="number" class="form-control " placeholder="Numero" name="nombre" *ngIf="editMode" [(ngModel)]="cliente.telefonos[i]"
-            required>
-          <div class="input-group-btn">
-            <a class="btn btn-default" (click)="delTelefonoIndex(i)" *ngIf="editMode">
-              <i class="fa fa-times" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
-      </span>
-    </div>
-  </div>
-
-  <div class="container">
-    <div >
-      <b>Notas:</b>
-      <p *ngIf="!editMode"> {{cliente.notas}}</p>
-      <div class="form-group" *ngIf="editMode">
-        <textarea name="notas" [(ngModel)]="cliente.notas" name="notas" id="notas" cols="30" rows="5"></textarea>
+  <mat-card-title>
+    <h5> Detalles del cliente:</h5>
+  </mat-card-title>
+  <mat-card-content>
+    <div class="container">
+      <div>
+        <label>Nombre:</label>
+        <p *ngIf="!editMode">{{cliente.nombre}}</p>
+        <input name="nombre" *ngIf="editMode" [(ngModel)]="cliente.nombre" placeholder="nombre" class="form-control input-sm" required>
       </div>
     </div>
 
-  </div>
-</mat-card>
+    <div class="container">
+      <div>
+        <b *ngIf="cliente.cuentas[0]||editMode">Cuentas:</b>
+        <span *ngIf="editMode">
+          <a class="fa fa-plus-square-o btn btn-link" aria-hidden="true" (click)="addCuenta()">Add</a>
+          <a class="fa fa-minus-square-o btn btn-link" aria-hidden="true" (click)="delCuenta()">Del</a>
+        </span>
 
+        <span *ngFor="let cuenta of cliente.cuentas;index as i">
+          <div *ngIf="!editMode">
+            <p for="">{{cuenta.banco}}: {{cuenta.numero}}</p>
+          </div>
+          <div *ngIf="editMode">
+            <select name="banco" class="form-control input-sm" [(ngModel)]="cuenta.banco" required>
+              <option value="default">Seleccione</option>
+              <option *ngFor="let banco of listaBancos">{{banco}}</option>
+            </select>
+            <input type="number" name="nombre" [(ngModel)]="cuenta.numero" placeholder="Numero de cuenta" class="form-control input-sm"
+              required>
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <div class="container">
+      <div>
+        <b *ngIf="cliente.telefonos[0]||editMode">Telefonos:</b>
+        <span *ngIf="editMode">
+          <a (click)="addTelefono()" class="fa fa-plus-square-o btn btn-link" aria-hidden="true">Add</a>
+          <a (click)="delTelefono()" class="fa fa-minus-square-o btn " aria-hidden="true">Del</a>
+        </span>
+
+        <span *ngFor="let telefono of cliente.telefonos; index as i; trackBy:identify">
+          <p *ngIf="!editMode">
+            <label>{{i+1}}.</label> {{telefono}}</p>
+          <div class="input-group">
+            <input type="number" class="form-control " placeholder="Numero" name="nombre" *ngIf="editMode" [(ngModel)]="cliente.telefonos[i]"
+              required>
+            <div class="input-group-btn">
+              <a class="btn btn-default" (click)="delTelefonoIndex(i)" *ngIf="editMode">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <div class="container">
+      <div>
+        <b *ngIf="cliente.notas||editMode"> Notas:</b>
+        <p *ngIf="!editMode"> {{cliente.notas}}</p>
+        <div class="form-group" *ngIf="editMode">
+          <textarea name="notas" [(ngModel)]="cliente.notas" name="notas" id="notas" cols="30" rows="5"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </mat-card-content>
+</mat-card>

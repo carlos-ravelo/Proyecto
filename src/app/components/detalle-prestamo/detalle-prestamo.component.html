@@ -1,5 +1,4 @@
 <div class="mat-elevation-z4">
-
   <div class="form-inline ">
     <button mat-button *ngIf="editMode " (click)="guardar() ">
       <i class="fa fa-floppy-o " aria-hidden="true "></i>
@@ -10,7 +9,6 @@
       <span *ngIf="!editMode ">Editar</span>
       <span *ngIf="editMode ">Cancelar</span>
     </button>
-
   </div>
 
   <mat-grid-list class="mat-grid" cols="3 " rowHeight="70px " *ngIf="!editMode ">
@@ -59,7 +57,7 @@
     <mat-grid-tile>
       <div #fechaProximoPago>
         <label for="fechaProxPago ">Fecha prox. pago:</label>
-        <span>Todavia</span>
+        {{prestamo.fechaProximoPago|date}}
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
@@ -71,7 +69,7 @@
     <mat-grid-tile>
       <div>
         <label>Monto Atraso:</label>
-        <span> todavia</span>
+        <span>{{montoAtraso|currency}} </span>
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
@@ -90,131 +88,42 @@
 
   <!-- /Controles de Guardar y Opciones-->
 
-  <div class="form-horizontal " *ngIf="false ">
-    <div class="form-group ">
-      <label class="control-label col-sm-2 " for="cliente ">ID:</label>
-      <div class="col-sm-4 ">
-        <span class=" ">{{prestamo.numeroPrestamo}}</span>
-      </div>
-    </div>
-    <div class="form-group ">
-      <label class="control-label col-sm-2 " for="cliente ">Cliente:</label>
-      <div class="col-sm-4 ">
-        <span *ngIf="!editMode " class="form-control ">{{prestamo.cliente}}</span>
-      </div>
-    </div>
-    <div class="form-group ">
-      <label class="control-label col-sm-2 " for="cliente ">Tasa:</label>
-      <div class="col-sm-4 ">
-        <span *ngIf="!editMode " class="form-control ">{{prestamo.tasa}} %</span>
-      </div>
-    </div>
-    <div class="form-group ">
-      <label class="control-label col-sm-2 " *ngIf="!editMode " for="cliente ">Capital Prestado:</label>
-      <div class="col-sm-4 ">
-        <span class="form-control " *ngIf="!editMode ">{{prestamo.capitalPrestado| currency}} </span>
-      </div>
-    </div>
-    <div class="form-group ">
-      <label class="control-label col-sm-2 " for="cliente ">Cant. de Cuotas:</label>
-      <div class="col-sm-4 ">
-        <span class="form-control " *ngIf="!editMode ">{{prestamo.cantidadCuotas}} </span>
-      </div>
-    </div>
-    <div class="form-group ">
-      <label class="control-label col-sm-2 " for="cliente ">Monto de Cuotas:</label>
-      <div class="col-sm-4 ">
-        <span class="form-control " *ngIf="!editMode ">{{prestamo.montoCuotas| currency}} </span>
-      </div>
-    </div>
-    <div class="form-group ">
-      <label class="control-label col-sm-2 " for="cliente ">Fecha Apertura:</label>
-      <div class="col-sm-4 ">
-        <span class="form-control " *ngIf="!editMode ">{{prestamo.fechaInicio| date}} </span>
-      </div>
-    </div>
-    <div class="form-group " *ngIf="!editMode ">
-      <label class="control-label col-sm-2 " for="fechaProxPago ">Fecha prox. pago:</label>
-      <div class="col-sm-4 ">
-        <span class="form-control ">Todavia</span>
-      </div>
-    </div>
-    <div class="form-group " *ngIf="!editMode " ng serve>
-      <label class="control-label col-sm-2 ">Capital Pend:</label>
-      <div class="col-sm-4 ">
-        <span class="form-control ">{{prestamo.capitalPendiente| currency}}</span>
-      </div>
-    </div>
-    <div *ngIf="!editMode " class="form-group ">
-      <label class="control-label col-sm-2 ">Monto Atraso:</label>
-      <div class="col-sm-4 ">
-        <span class="form-control "> todavia</span>
-      </div>
-    </div>
-    <div *ngIf="!editMode " class="form-group ">
-      <label class="control-label col-sm-2 ">Pagado Capital:</label>
-      <div class="col-sm-4 ">
-        <span class="form-control ">{{prestamo.pagadoCapital| currency}} </span>
-      </div>
-    </div>
-  </div>
 
   <!--  Editar Prestamo -->
-  <div *ngIf="editMode ">
-    <div class="form-horizontal ">
-      <div class="form-group ">
-        <label class="control-label col-sm-2 " for="cliente ">ID:</label>
-        <div class="col-sm-4 ">
-          <span class=" ">{{prestamo.numeroPrestamo}}</span>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <mat-select placeholder="Seleccione el cliente " [(value)]="prestamo.cliente ">
-              <mat-option [value]="cliente.nombre " *ngFor="let cliente of listaCliente ">
-                {{cliente.nombre}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <input type="number " matInput placeholder="Tasa " [(ngModel)]="prestamo.tasa ">
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <input type="number " matInput placeholder="Capital Inicial " [(ngModel)]="movimiento.montoPrestado ">
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <input type="number " matInput placeholder="Cantidad cuotas " [(ngModel)]="prestamo.cantidadCuotas ">
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <input type="number " matInput placeholder="Monto de cuotas " [(ngModel)]="prestamo.montoCuotas ">
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group ">
-        <div class="col-sm-4 ">
-          <mat-form-field>
-            <input type="date " matInput placeholder="Fecha apertura " [ngModel]=" prestamo.fechaInicio| date:
-  'yyyy-MM-dd' " (ngModelChange)="prestamo.fechaInicio=$event " id="FechaInicio " name="fechaInicio ">
-
-          </mat-form-field>
-        </div>
-      </div>
-
-    </div>
+  <div *ngIf="editMode " class="editarPrestamo">
+    <label for="cliente ">ID:</label>
+    {{prestamo.numeroPrestamo}}
+    <br>
+    <mat-form-field>
+      <mat-select placeholder="Seleccione el cliente " [(value)]="prestamo.cliente ">
+        <mat-option [value]="cliente.nombre " *ngFor="let cliente of listaCliente ">
+          {{cliente.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number" matInput placeholder="Tasa" [(ngModel)]="prestamo.tasa " (blur)="calcularMontoCuota()">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number" matInput placeholder="Capital Inicial" [(ngModel)]="movimiento.montoPrestado" (blur)="calcularMontoCuota()">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number" matInput placeholder="Cantidad cuotas " [(ngModel)]="prestamo.cantidadCuotas " (blur)="calcularMontoCuota()">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number" matInput placeholder="Monto de cuotas " [(ngModel)]="prestamo.montoCuotas ">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="fechaInicio" placeholder="Fecha de inicio" (dateChange)="prestamo.fechaInicio=formatFecha($event)"
+        [value]="prestamo.fechaInicio">
+      <mat-datepicker-toggle matSuffix [for]="fechaInicio"></mat-datepicker-toggle>
+      <mat-datepicker #fechaInicio></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="fechaProximoPago" placeholder="Fecha proximo pago" (dateChange)="prestamo.fechaProximoPago=formatFecha($event)"
+        [value]="prestamo.fechaProximoPago">
+      <mat-datepicker-toggle matSuffix [for]="fechaProximoPago"></mat-datepicker-toggle>
+      <mat-datepicker #fechaProximoPago></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>
