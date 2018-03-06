@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input, TemplateRef, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, TemplateRef, Inject, ViewChild, SimpleChanges } from '@angular/core';
 import { Prestamo } from '../../clases/cliente'
 import { Movimiento } from '../../clases/cliente'
 import { ClientesService } from '../../servicios/clientes.service';
@@ -34,6 +34,13 @@ export class MovimientosPorPrestamoComponent implements OnInit {
 
   constructor(private db: DataFirebaseService, private clientesService: ClientesService,
     public dialog: MatDialog, private funcionesComunes: FuncionesComunesService) { }
+  ngOnInit() {
+    this.obtenerListaMovimientos();
+    this.createFormMovimientos = false;
+  }
+  ngOnChanges() {
+    // this.obtenerListaMovimientos();
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -81,14 +88,15 @@ export class MovimientosPorPrestamoComponent implements OnInit {
 
   actualizarPrestamo() {
     let subscripcion = this.db.obtenerMovimientosPorPrestamo(this.prestamo.numeroPrestamo).subscribe((listaMovimientos) => {
-      let valoresCalculados = this.funcionesComunes.calcularValoresPrestamo(listaMovimientos, this.prestamo);
+      let valoresCalculados = this.funcionesComunes.calcularValoresPrestamo(this.listaMovimientos, this.prestamo);
       this.prestamo.capitalPrestado = valoresCalculados.capitalPrestado;
       this.prestamo.pagadoCapital = valoresCalculados.pagadoCapital;
       this.prestamo.capitalPendiente = valoresCalculados.capitalPendiente;
       this.prestamo.montoCuotas = this.funcionesComunes.calcularMontoCuota(this.prestamo);
       this.db.modificarPrestamo(this.prestamo);
       subscripcion.unsubscribe();
-    });
+    })
+      ;
 
   }
 
@@ -119,18 +127,8 @@ export class MovimientosPorPrestamoComponent implements OnInit {
     $('.modal-backdrop').remove();
     this.createFormMovimientos = false;
   }
-  ngOnChanges() {
-    this.obtenerListaMovimientos();
 
 
-  }
-  ngOnInit() {
-    this.obtenerListaMovimientos();
-
-    this.createFormMovimientos = false;
-
-
-  }
 
 
 }

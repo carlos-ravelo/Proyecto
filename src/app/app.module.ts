@@ -59,6 +59,8 @@ import { MatTableModule } from '@angular/material/table';
 import { AmortizacionComponent } from './components/amortizacion/amortizacion.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatNativeDateModule } from '@angular/material'
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 
 
 //Moment y  MatDatepicker
@@ -80,7 +82,8 @@ export const MY_FORMATS = {
 };
 
 
-import { FuncionesComunesService } from './servicios/funciones-comunes.service'
+import { FuncionesComunesService } from './servicios/funciones-comunes.service';
+import { CargandoComponent } from './components/cargando/cargando.component'
 
 
 @NgModule({
@@ -98,6 +101,7 @@ import { FuncionesComunesService } from './servicios/funciones-comunes.service'
     MovimientosPorPrestamoComponent,
     ModificarMovimientoComponent,
     AmortizacionComponent,
+    CargandoComponent,
 
   ],
   entryComponents: [
@@ -135,7 +139,8 @@ import { FuncionesComunesService } from './servicios/funciones-comunes.service'
     MatPaginatorModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressBarModule,
 
   ],
   providers: [ClientesService, AngularFireModule, DataFirebaseService, CurrencyPipe, DatePipe, AngularFireAuth,

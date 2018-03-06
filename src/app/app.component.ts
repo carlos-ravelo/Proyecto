@@ -25,6 +25,8 @@ export class AppComponent implements OnInit {
     this.afAuth.auth.signOut();
   }
   ngOnInit() {
+    //this.router.navigateByUrl("/cargando")
+
     this.logged = false;
     this.afAuth.auth.onAuthStateChanged(((a: firebase.User) => {
       if (a) {
